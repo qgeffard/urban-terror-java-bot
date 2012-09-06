@@ -327,41 +327,6 @@ public class Console {
     
     
     /**
-     * Return the current map name.
-     * 
-     * @return String
-     * @author Daniele Pantaleone
-     * @throws IOException 
-     **/
-    public String getMap() throws IOException {
-        
-    	String result = this.rcon.sendRead("status");
-        
-    	// This is the string we expect from the /rcon status command.
-        // We need to parse it and get only the current map name.
-        //
-        // map: ut4_casa
-        // num score ping name            lastmsg address               qport rate
-        // --- ----- ---- --------------- ------- --------------------- ----- -----
-        //   1    19   33 l33tn1ck             33 62.212.106.216:27960   5294 25000
-        
-        String mapname;
-        Pattern pattern = Pattern.compile("^\\s*map:\\s*([\\w\\d]+)\\s*$");
-   		String[] lines = result.split("\n");
-        
-        for (String line: lines) { 
-            Matcher m = pattern.matcher(line);
-            if (m.matches()) { 
-                mapname = m.group(1); 
-                break;
-            }
-        }
-        
-        return mapname;
-    }
-    
-    
-    /**
      * Return a cvar value.
      * 
      * @author Daniele Pantaleone
@@ -402,6 +367,41 @@ public class Console {
      **/
     public Gametype getGametype() throws IOException {
         return Gametype.getByCode(new Integer(this.getCvar("g_gametype")));
+    }
+    
+    
+    /**
+     * Return the current map name.
+     * 
+     * @return String
+     * @author Daniele Pantaleone
+     * @throws IOException 
+     **/
+    public String getMap() throws IOException {
+        
+    	String result = this.rcon.sendRead("status");
+        
+    	// This is the string we expect from the /rcon status command.
+        // We need to parse it and get only the current map name.
+        //
+        // map: ut4_casa
+        // num score ping name            lastmsg address               qport rate
+        // --- ----- ---- --------------- ------- --------------------- ----- -----
+        //   1    19   33 l33tn1ck             33 62.212.106.216:27960   5294 25000
+        
+        String mapname;
+        Pattern pattern = Pattern.compile("^\\s*map:\\s*([\\w\\d]+)\\s*$");
+        String[] lines = result.split("\n");
+        
+        for (String line: lines) { 
+            Matcher m = pattern.matcher(line);
+            if (m.matches()) { 
+                mapname = m.group(1); 
+                break;
+            }
+        }
+        
+        return mapname;
     }
     
     
