@@ -21,10 +21,10 @@ import net.goreclan.logger.Log;
 public class Rcon {
     
     private InetAddress ip;
-    private int port;
+    private Integer port;
     private String password;
     private DatagramSocket socket;
-    private int timeout = 10000;
+    private Integer timeout = 10000;
         
     
     /**
@@ -33,7 +33,7 @@ public class Rcon {
      * @return Rcon
      * @author Daniele Pantaleone 
      **/
-    public Rcon(String address, int port, String password) {
+    public Rcon(String address, Integer port, String password) {
         
         try {
         	
@@ -66,7 +66,6 @@ public class Rcon {
      **/
     public void sendNoRead(String command) throws IOException {
         
-        // Logging the RCON command and building a proper RCON string
         Log.verbose(String.format("RCON sending [%s:%d]: %s", this.ip.getHostAddress(), this.port, command));
         String send = String.format("xxxxrcon %s %s", this.password, command);
         
@@ -94,7 +93,6 @@ public class Rcon {
      **/
     public String sendRead(String command) throws IOException {
         
-        // Logging the RCON command and building a proper RCON string
         Log.verbose(String.format("RCON sending [%s:%d]: %s", this.ip.getHostAddress(), this.port, command));
         String send = String.format("xxxxrcon %s %s", this.password, command);
         
