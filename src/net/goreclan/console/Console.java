@@ -144,7 +144,6 @@ public class Console {
         
         return dumpuser;
         
-        
     }
         
     
