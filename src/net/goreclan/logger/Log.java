@@ -37,6 +37,33 @@ public class Log {
     /**
      * @return void
      * @author Mathias Van Malderen
+     */
+    public static void bot(String message) {
+        log(LogLevel.BOT, message);
+    }
+    
+    
+    /**
+     * @return void
+     * @author Mathias Van Malderen
+     */
+    public static void info(String message) {
+        log(LogLevel.INFO, message);
+    }
+    
+    
+    /**
+     * @return void
+     * @author Mathias Van Malderen
+     **/
+    public static void verbose(String message) {
+        log(LogLevel.VERBOSE, message);
+    }
+    
+    
+    /**
+     * @return void
+     * @author Mathias Van Malderen
      **/
     public static void debug(String message) {
         log(LogLevel.DEBUG, message);
@@ -49,15 +76,6 @@ public class Log {
      **/
     public static void error(String message) {
         log(LogLevel.ERROR, message);
-    }
-    
-    
-    /**
-     * @return void
-     * @author Mathias Van Malderen
-     **/
-    public static void verbose(String message) {
-        log(LogLevel.VERBOSE, message);
     }
     
     
@@ -182,7 +200,9 @@ public class Log {
      **/
     public static void main(String[] args) {
         Log.setDeveloper(true);
-        Log.verbose("This is an information message.");
+        Log.bot("This is a bot message.");
+        Log.info("This is an info message.");
+        Log.verbose("This is a verbose message.");
         Log.debug("This is a debugging message.");
         Log.error("This is an error message.");
     }

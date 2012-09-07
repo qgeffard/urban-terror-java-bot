@@ -13,8 +13,10 @@ import java.util.logging.Level;
 
 public enum LogLevel {
     
-    VERBOSE(Level.FINEST),
-    DEBUG(Level.FINE),
+    BOT(Level.FINEST),
+    INFO(Level.FINER),
+    VERBOSE(Level.FINE),
+    DEBUG(Level.INFO),
     ERROR(Level.SEVERE);
     
     private Level logLevel;
@@ -47,10 +49,14 @@ public enum LogLevel {
      * @param logLevel
      **/
     public static LogLevel toLogLevel(Level logLevel) {
-        if (Level.FINEST.equals(logLevel)) return VERBOSE;
-        else if (Level.FINE.equals(logLevel)) return DEBUG;
-        else if (Level.SEVERE.equals(logLevel)) return ERROR;
-        else return null;
+        
+        if (Level.FINEST.equals(logLevel))  return BOT;
+        if (Level.FINER.equals(logLevel))   return INFO;
+        if (Level.FINE.equals(logLevel))    return VERBOSE;
+        if (Level.INFO.equals(logLevel))    return DEBUG;
+        if (Level.SEVERE.equals(logLevel))  return ERROR;
+        
+        return null;
     }
     
     
