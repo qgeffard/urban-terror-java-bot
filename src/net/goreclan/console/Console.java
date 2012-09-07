@@ -18,8 +18,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.goreclan.domain.Client;
+import net.goreclan.exception.ParserException;
 import net.goreclan.iourt42.Gametype;
-import net.goreclan.iourt42.Playerinfo;
 import net.goreclan.iourt42.Team;
 import net.goreclan.logger.Log;
 import net.goreclan.parser.BooleanParser;
@@ -410,8 +410,9 @@ public class Console {
      * @return Boolean
      * @author Daniele Pantaleone
      * @throws IOException 
+     * @throws ParserException
      **/
-    public Boolean getMatchmode() throws IOException {
+    public Boolean getMatchmode() throws IOException, ParserException {
         return BooleanParser.valueOf(this.getCvar("g_matchmode"));       
     }
     
