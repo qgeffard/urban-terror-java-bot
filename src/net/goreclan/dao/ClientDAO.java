@@ -3,7 +3,7 @@
  *
  * @author      Daniele Pantaleone
  * @version     1.1
- * @copyright   Daniele Pantaleone, 26 June, 2012
+ * @copyright   Daniele Pantaleone, 7 September, 2012
  * @package     net.goreclan.dao
  **/
 
@@ -22,7 +22,10 @@ import net.goreclan.utility.DataSourceManager;
 
 public class ClientDAO {
     
-    
+	private static Connection conn;
+	private static PreparedStatement stmt;
+	private static ResultSet rs;
+	
     private static final String LOAD = "SELECT `c`.`name` AS `c_name`, " +
                                               "`c`.`guid` AS `c_guid`, " +
                                               "`c`.`ip` AS `c_ip`, " +
@@ -53,41 +56,38 @@ public class ClientDAO {
      **/
     public static void load(Client client) throws ClassNotFoundException, SQLException {
         
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-                
-        // Getting the DBMS connection and executing the SQL statement
-        conn = DataSourceManager.getConnection();
-        pstmt = conn.prepareStatement(LOAD);
-        pstmt.setInt(1, client.getId());
-        rs = pstmt.executeQuery();
+    	if (conn == null || conn.isClosed()) 
+    		conn = DataSourceManager.getConnection();
+        
+    	stmt = conn.prepareStatement(LOAD);
+        stmt.setInt(1, client.id);
+        rs = stmt.executeQuery();
         
         if (rs.next()) {
         
             // Creating the Group object
             Group group = new Group();
-            group.setId(rs.getInt("g_id"));
-            group.setName(rs.getString("g_name"));
-            group.setKeyword(rs.getString("g_keyword"));
-            group.setLevel(rs.getInt("g_level"));
+            group.id = rs.getInt("g_id");
+            group.name = rs.getString("g_name");
+            group.keyword = rs.getString("g_keyword");
+            group.level = rs.getInt("g_level");
             
             // Filling object attributes
-            client.setGroup(group);
-            client.setName(rs.getString("c_name"));
-            client.setGuid(rs.getString("c_guid"));
-            client.setIp(rs.getString("c_ip"));
-            client.setConnections(rs.getInt("c_connections"));
-            if (rs.getString("c_username") != null) { client.setUsername(rs.getString("c_username")); }
-            if (rs.getString("c_password") != null) { client.setPassword(rs.getString("c_password")); }
-            client.setTimeAdd(new Date(rs.getLong("c_time_add")));
-            if (rs.getString("c_time_edit") != null) { client.setTimeEdit(new Date(rs.getLong("c_time_edit"))); }
+            client.group = group;
+            client.name = rs.getString("c_name");
+            client.guid = rs.getString("c_guid");
+            client.ip = rs.getString("c_ip");
+            client.connections = rs.getInt("c_connections");
+            client.username = rs.getString("c_username");
+            client.password = rs.getString("c_password");
+            client.time_add = new Date(rs.getLong("c_time_add"));
+            client.time_edit = new Date(rs.getLong("c_time_edit"));
             
         }
         
         // Closing current ResultSet and Prepared Statement
         if (rs != null) rs.close();
-        if (pstmt != null) pstmt.close();
+        if (stmt != null) stmt.close();
             
     }
     
@@ -101,25 +101,24 @@ public class ClientDAO {
      **/
     public static void insert(Client client) throws ClassNotFoundException, SQLException { 
         
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet generatedKeys = null;
+    	if (conn == null || conn.isClosed()) 
+    		conn = DataSourceManager.getConnection();
+    	
+    	stmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+    	stmt.setInt(1, client.group.id);
+        stmt.setString(2, client.name);
+        stmt.setString(3, client.guid);
+        stmt.setString(4, client.ip);
+        stmt.setLong(5, client.time_add.getTime());
+        stmt.executeUpdate();
+    	
+        // Getting the auto-incremented client id
+    	rs = stmt.getGeneratedKeys();
+    	client.id = rs.getInt(1);
         
-        // Getting the DBMS connection and executing the SQL statement
-        conn = DataSourceManager.getConnection();
-        pstmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-        pstmt.setInt(1, client.getGroup().getId());
-        pstmt.setString(2, client.getName());
-        pstmt.setString(3, client.getGuid());
-        pstmt.setString(4, client.getIp());
-        pstmt.setLong(5, client.getTimeAdd().getTime());
-        pstmt.executeUpdate();
-        generatedKeys = pstmt.getGeneratedKeys();
-        client.setId(generatedKeys.getInt(1));
-        
-        // Closing current ResultSet and Prepared Statement
-        if (generatedKeys != null) generatedKeys.close();
-        if (pstmt != null) pstmt.close();
+    	// Closing current ResultSet and Prepared Statement
+        if (rs != null) rs.close();
+        if (stmt != null) stmt.close();
         
     }
     
@@ -133,26 +132,24 @@ public class ClientDAO {
      **/
     public static void update(Client client) throws ClassNotFoundException, SQLException { 
         
-        Connection conn = null;
-        PreparedStatement pstmt = null;
+    	if (conn == null || conn.isClosed()) 
+    		conn = DataSourceManager.getConnection();
         
-        // Getting the DBMS connection and executing the SQL statement
-        conn = DataSourceManager.getConnection();
-        pstmt = conn.prepareStatement(UPDATE);
-        pstmt.setInt(1, client.getGroup().getId());
-        pstmt.setString(2, client.getName());
-        pstmt.setString(3, client.getGuid());
-        pstmt.setString(4, client.getIp());
-        pstmt.setInt(5, client.getConnections());
-        pstmt.setString(6, client.getUsername());
-        pstmt.setString(7, client.getPassword());
-        pstmt.setLong(8, client.getTimeAdd().getTime());
-        pstmt.setLong(9, client.getTimeEdit().getTime());
-        pstmt.setInt(10, client.getId());
-        pstmt.executeUpdate();
+    	stmt = conn.prepareStatement(UPDATE);
+        stmt.setInt(1, client.group.id);
+        stmt.setString(2, client.name);
+        stmt.setString(3, client.guid);
+        stmt.setString(4, client.ip);
+        stmt.setInt(5, client.connections);
+        stmt.setString(6, client.username);
+        stmt.setString(7, client.password);
+        stmt.setLong(8, client.time_add.getTime());
+        stmt.setLong(9, client.time_edit.getTime());
+        stmt.setInt(10, client.id);
+        stmt.executeUpdate();
         
-        // Closing the Prepared Statement
-        if (pstmt != null) pstmt.close();
+        // Closing current Prepared Statement
+        if (stmt != null) stmt.close();
         
     }
     
@@ -166,17 +163,15 @@ public class ClientDAO {
      **/
     public static void delete(Client client) throws ClassNotFoundException, SQLException { 
         
-        Connection conn = null;
-        PreparedStatement pstmt = null;
+    	if (conn == null || conn.isClosed()) 
+    		conn = DataSourceManager.getConnection();
         
-        // Getting the DBMS connection and executing the SQL statement
-        conn = DataSourceManager.getConnection();
-        pstmt = conn.prepareStatement(DELETE);
-        pstmt.setInt(1, client.getId());
-        pstmt.executeUpdate();
+        stmt = conn.prepareStatement(DELETE);
+        stmt.setInt(1, client.id);
+        stmt.executeUpdate();
         
-        // Closing the Prepared Statement
-        if (pstmt != null) pstmt.close();
+     // Closing current Prepared Statement
+        if (stmt != null) stmt.close();
         
     }
     
