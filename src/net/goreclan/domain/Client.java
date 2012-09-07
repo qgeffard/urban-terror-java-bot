@@ -11,7 +11,6 @@ package net.goreclan.domain;
 
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.List;
 
 import net.goreclan.dao.ClientDAO;
 import net.goreclan.iourt42.Team;
