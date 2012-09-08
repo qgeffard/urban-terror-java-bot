@@ -2,9 +2,9 @@
  * This enum translates between desired log level names and Java Logging API log level names.
  * 
  * @author Mathias Van Malderen
- * @version 1.0
- * @copyright Mathias Van Malderen, 29 June, 2012
- * @package net.goreclan.utility.impl
+ * @version 1.1
+ * @copyright Mathias Van Malderen, 7 September, 2012
+ * @package net.goreclan.logger
  **/
 
 package net.goreclan.logger;

@@ -4,7 +4,7 @@
  * @author Mathias Van Malderen
  * @version 1.0
  * @copyright Mathias Van Malderen, 29 June, 2012
- * @package net.goreclan.utility.impl
+ * @package net.goreclan.logger
  **/
 
 package net.goreclan.logger;
