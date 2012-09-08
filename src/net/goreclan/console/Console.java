@@ -2,7 +2,7 @@
  * ioUrbanTerror 4.2 RCON Console implementation
  * 
  * @author      Daniele Pantaleone
- * @version     1.0
+ * @version     1.1
  * @copyright   Daniele Pantaleone, 01 July, 2012
  * @package     net.goreclan.console
  **/
@@ -21,9 +21,7 @@ import net.goreclan.domain.Client;
 import net.goreclan.exception.ParserException;
 import net.goreclan.iourt42.Gametype;
 import net.goreclan.iourt42.Team;
-import net.goreclan.logger.Log;
 import net.goreclan.parser.BooleanParser;
-import net.goreclan.utility.Functions;
 
 public class Console {
     
@@ -277,7 +275,7 @@ public class Console {
      * @author Daniele Pantaleone
      * @throws IOException 
      **/
-    public void forceteam(Client client, Team team) {
+    public void forceteam(Client client, Team team) throws IOException {
     	if (team == Team.TEAM_RED) this.forcered(client);
     	else if (team == Team.TEAM_BLUE) this.forceblue(client);
     	else if (team == Team.TEAM_SPEC) this.forcespec(client);
@@ -306,7 +304,7 @@ public class Console {
      * @throws IndexOutOfBoundsException
      * @throws IOException 
      **/
-    public void forceteam(Client client, String teamname) throws IndexOutOfBoundsException, IOException {
+    public void forceeam(Client client, String teamname) throws IndexOutOfBoundsException, IOException {
     	Team team = Team.getByName(teamname);
     	this.forceteam(client, team);
     }
@@ -335,7 +333,7 @@ public class Console {
     	
         String result = this.rcon.sendRead(name);
         
-        String value;
+        String value = null;
         Pattern pattern = Pattern.compile("^\\s*\"[\\w\\d]*\"\\s*is:\"([\\w\\d]*)\".*$");
         Matcher m = pattern.matcher(result);
         if (m.matches()) value = m.group(1);
@@ -388,7 +386,7 @@ public class Console {
         // --- ----- ---- --------------- ------- --------------------- ----- -----
         //   1    19   33 l33tn1ck             33 62.212.106.216:27960   5294 25000
         
-        String mapname;
+        String mapname = null;
         Pattern pattern = Pattern.compile("^\\s*map:\\s*([\\w\\d]+)\\s*$");
         String[] lines = result.split("\n");
         
@@ -440,6 +438,13 @@ public class Console {
     	
         String result = this.rcon.sendRead("players");
         
+        // Do not bother us with Quake3 color codes.
+    	// We are going to remove them anyway.
+    	
+    	Pattern p = Pattern.compile("\\^[0-9]{1}");
+        Matcher m = p.matcher(result);
+        result = m.replaceAll("");
+        
         // This is the string we expect from the /rcon players command.
         // We need to parse it and build an Array with players informations.
         //
@@ -454,19 +459,19 @@ public class Console {
         
         for (String line: lines) {
             
-            Matcher m = pattern.matcher(line);
+            Matcher matcher = pattern.matcher(line);
             
             if (m.matches()) {
                 
                 List<String> x = new ArrayList<String>();
-                x.add(m.group(1));  // Slot
-                x.add(m.group(2));  // Name
-                x.add(m.group(3));  // Team
-                x.add(m.group(4));  // Kills
-                x.add(m.group(5));  // Deaths
-                x.add(m.group(6));  // Ping
-                x.add(m.group(8));  // IP
-                x.add(m.group(9));  // Port
+                x.add(matcher.group(1));  // Slot
+                x.add(matcher.group(2));  // Name
+                x.add(matcher.group(3));  // Team
+                x.add(matcher.group(4));  // Kills
+                x.add(matcher.group(5));  // Deaths
+                x.add(matcher.group(6));  // Ping
+                x.add(matcher.group(8));  // IP
+                x.add(matcher.group(9));  // Port
                 players.add(x);
                 
             }
@@ -487,7 +492,14 @@ public class Console {
     public List<List<String>> getStatus() throws IOException {
         
     	String result = this.rcon.sendRead("status");
-
+    	
+    	// Do not bother us with Quake3 color codes.
+    	// We are going to remove them anyway.
+    	
+    	Pattern p = Pattern.compile("\\^[0-9]{1}");
+        Matcher m = p.matcher(result);
+        result = m.replaceAll("");
+    	
     	// This is the string we expect from the /rcon status command.
         // We need to parse it and build an Array with players informations.
         //
@@ -502,20 +514,20 @@ public class Console {
 
         for (String line: lines) {
             
-            Matcher m = pattern.matcher(line);
+            Matcher matcher = pattern.matcher(line);
             
             if (m.matches()) {
                 
                 List<String> x = new ArrayList<String>();
-                x.add(m.group(1));  // Slot
-                x.add(m.group(2));  // Score
-                x.add(m.group(3));  // Ping
-                x.add(m.group(4));  // Name
-                x.add(m.group(5));  // LastMsg
-                x.add(m.group(6));  // IP
-                x.add(m.group(7));  // Port
-                x.add(m.group(8));  // QPort
-                x.add(m.group(9));  // Rate
+                x.add(matcher.group(1));  // Slot
+                x.add(matcher.group(2));  // Score
+                x.add(matcher.group(3));  // Ping
+                x.add(matcher.group(4));  // Name
+                x.add(matcher.group(5));  // LastMsg
+                x.add(matcher.group(6));  // IP
+                x.add(matcher.group(7));  // Port
+                x.add(matcher.group(8));  // QPort
+                x.add(matcher.group(9));  // Rate
                 status.add(x);
                 
             }
