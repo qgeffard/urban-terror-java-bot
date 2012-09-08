@@ -13,8 +13,7 @@ import java.util.logging.Level;
 
 public enum LogLevel {
     
-    BOT(Level.FINEST),
-    INFO(Level.FINER),
+
     VERBOSE(Level.FINE),
     DEBUG(Level.INFO),
     ERROR(Level.SEVERE);
