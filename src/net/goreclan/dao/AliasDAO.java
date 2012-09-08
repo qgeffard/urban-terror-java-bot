@@ -138,7 +138,7 @@ public class AliasDAO {
      **/
     public static void delete(Alias alias) throws ClassNotFoundException, SQLException {
         
-    	if (conn == null || conn.isClosed()) 
+    	if (conn == null || conn.isClosed()) 	
     		conn = DataSourceManager.getConnection();
         
         stmt = conn.prepareStatement(DELETE);
