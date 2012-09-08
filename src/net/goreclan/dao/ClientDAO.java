@@ -170,7 +170,7 @@ public class ClientDAO {
         stmt.setInt(1, client.id);
         stmt.executeUpdate();
         
-     // Closing current Prepared Statement
+        // Closing current Prepared Statement
         if (stmt != null) stmt.close();
         
     }
