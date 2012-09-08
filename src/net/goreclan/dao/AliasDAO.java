@@ -1,5 +1,5 @@
 /**
- * This class represents a DAO interface with the Aliases database table.
+ * This class represents a DAO interface with the "aliases" database table.
  * 
  * @author Mathias Van Malderen, Daniele Pantaleone
  * @version 1.1
