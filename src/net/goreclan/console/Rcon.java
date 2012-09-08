@@ -43,7 +43,7 @@ public class Rcon {
             this.socket = new DatagramSocket();
             this.socket.setSoTimeout(this.timeout);
             
-            Log.debug(String.format("RCON configuration completed [ IP : %s | PORT : %d | PASSWORD : %s | TIMEOUT : %d ].", 
+            Log.bot(String.format("RCON configuration completed [ IP : %s | PORT : %d | PASSWORD : %s | TIMEOUT : %d ].", 
             						 this.ip.getHostAddress(), 
             						 this.port, 
             						 this.password, 

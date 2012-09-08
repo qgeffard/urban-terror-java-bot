@@ -35,7 +35,8 @@ public class Log {
     
     
     /**
-     * @return void
+     * Log a bot message.
+     * 
      * @author Mathias Van Malderen
      */
     public static void bot(String message) {
@@ -44,7 +45,8 @@ public class Log {
     
     
     /**
-     * @return void
+     * Log an info message.
+     * 
      * @author Mathias Van Malderen
      */
     public static void info(String message) {
@@ -53,7 +55,8 @@ public class Log {
     
     
     /**
-     * @return void
+     * Log a verbose message.
+     * 
      * @author Mathias Van Malderen
      **/
     public static void verbose(String message) {
@@ -62,7 +65,8 @@ public class Log {
     
     
     /**
-     * @return void
+     * Log a debug message.
+     * 
      * @author Mathias Van Malderen
      **/
     public static void debug(String message) {
@@ -71,7 +75,8 @@ public class Log {
     
     
     /**
-     * @return void
+     * Log an error message.
+     * 
      * @author Mathias Van Malderen
      **/
     public static void error(String message) {
@@ -102,7 +107,8 @@ public class Log {
     
     
     /**
-     * @return void
+     * Write a message in the log.
+     * 
      * @author Mathias Van Malderen
      **/
     private static void log(LogLevel level, String message) {
@@ -157,7 +163,8 @@ public class Log {
     
     
     /**
-     * @return void
+     * Set the current log level.
+     * 
      * @author Mathias Van Malderen
      **/
     public static void setLogLevel(LogLevel logLevel) {
@@ -166,7 +173,8 @@ public class Log {
     
     
     /**
-     * @return void
+     * Set the current log path.
+     * 
      * @author Mathias Van Malderen
      **/
     public static void setLogPath(String logPath) {
@@ -175,7 +183,9 @@ public class Log {
     
     
     /**
-     * @return void
+     * Set the log developer mode.
+     * If set, log messages are printed also in the standard output.
+     * 
      * @author Mathias Van Malderen
      **/
     public static void setDeveloper(boolean developer) {
@@ -184,7 +194,8 @@ public class Log {
     
     
     /**
-     * @return void
+     * Set whether to create new log at each bot start.
+     * 
      * @author Mathias Van Malderen
      **/
     public static void setAppend(boolean append) {

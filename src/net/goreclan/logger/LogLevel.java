@@ -22,8 +22,9 @@ public enum LogLevel {
     private Level logLevel;
     
     /**
+     * Object constructor
+     * 
      * @author Mathias Van Malderen
-     * @param logLevel
      **/
     private LogLevel(Level logLevel) {
         this.logLevel = logLevel;
@@ -46,7 +47,6 @@ public enum LogLevel {
      * 
      * @return LogLevel
      * @author Mathias Van Malderen
-     * @param logLevel
      **/
     public static LogLevel toLogLevel(Level logLevel) {
         
@@ -65,7 +65,6 @@ public enum LogLevel {
      * corresponding to a LogLevel enum constant.
      * 
      * @return String
-     * @param logLevel
      * @author Mathias Van Malderen
      **/
     public static String toString(Level logLevel) {
