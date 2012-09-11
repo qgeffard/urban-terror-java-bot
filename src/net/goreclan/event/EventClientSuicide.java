@@ -24,7 +24,7 @@ public class EventClientSuicide extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientSuicide(Client client, Mod mod) {
-        super("EVT_CLIENT_SUCIDE");
+        super(EventType.EVT_CLIENT_SUICIDE);
         this.client = client;
         this.mod = mod;
     }

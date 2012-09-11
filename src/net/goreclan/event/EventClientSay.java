@@ -23,7 +23,7 @@ public class EventClientSay extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientSay(Client client, Client target, String sentence) {
-        super("EVT_CLIENT_SAY");
+        super(EventType.EVT_CLIENT_SAY);
         this.client = client;
         this.sentence = sentence;
     }

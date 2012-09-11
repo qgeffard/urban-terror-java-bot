@@ -22,7 +22,7 @@ public class EventClientDisconnect extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientDisconnect(Client client) {
-        super("EVT_CLIENT_DISCONNECT");
+        super(EventType.EVT_CLIENT_DISCONNECT);
         this.client = client;
     }
     

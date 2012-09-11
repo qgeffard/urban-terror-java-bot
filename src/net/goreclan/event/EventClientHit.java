@@ -27,7 +27,7 @@ public class EventClientHit extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientHit(Client client, Client target, Mod mod, Hitlocation hitlocation) {
-        super("EVT_CLIENT_HIT");
+        super(EventType.EVT_CLIENT_HIT);
         this.client = client;
         this.target = target;
         this.mod = mod;

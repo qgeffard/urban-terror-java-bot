@@ -19,7 +19,7 @@ public class EventGameExit extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventGameExit() {
-        super("EVT_GAME_EXIT");
+        super(EventType.EVT_GAME_EXIT);
     }
     
 }

@@ -26,7 +26,7 @@ public class EventClientTeamChange extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientTeamChange(Client client, Team before, Team after) {
-        super("EVT_CLIENT_TEAM_CHANGE");
+        super(EventType.EVT_CLIENT_TEAM_CHANGE);
         this.client = client;
         this.before = before;
         this.after = after;

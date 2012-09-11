@@ -24,7 +24,7 @@ public class EventClientSayPrivate extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientSayPrivate(Client client, Client target, String sentence) {
-        super("EVT_CLIENT_SAY_PRIVATE");
+        super(EventType.EVT_CLIENT_SAY_PRIVATE);
         this.client = client;
         this.target = target;
         this.sentence = sentence;

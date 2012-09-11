@@ -23,7 +23,7 @@ public class EventClientVote extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientVote(Client client, String data) {  
-        super("EVT_CLIENT_VOTE");
+        super(EventType.EVT_CLIENT_VOTE);
         this.client = client;
         this.data = data;
     }

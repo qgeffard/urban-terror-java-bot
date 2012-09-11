@@ -13,7 +13,7 @@ import java.util.Date;
 
 public abstract class Event {
     
-    private String name = null;
+    private EventType name = null;
     private Date time = null;
     
     /**
@@ -22,7 +22,7 @@ public abstract class Event {
      * @return void
      * @author Daniele Pantaleone 
      **/
-    public Event(String name) {
+    public Event(EventType name) {
         this.name = name;
         this.time = new Date();
     }
@@ -32,7 +32,7 @@ public abstract class Event {
      * @return String
      * @author Daniele Pantaleone
      **/
-    public String getName() {
+    public EventType getName() {
         return this.name;
     }
     

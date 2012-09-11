@@ -18,7 +18,7 @@ public class EventGameRoundStart extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventGameRoundStart(String infostring) {
-        super("EVT_GAME_ROUND_START");
+        super(EventType.EVT_GAME_ROUND_START);
     }
 
 }

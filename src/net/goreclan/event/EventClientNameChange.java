@@ -25,7 +25,7 @@ public class EventClientNameChange extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientNameChange(Client client, String before, String after) {
-        super("EVT_CLIENT_NAME_CHANGE");
+        super(EventType.EVT_CLIENT_NAME_CHANGE);
         this.client = client;
         this.before = before;
         this.after = after;

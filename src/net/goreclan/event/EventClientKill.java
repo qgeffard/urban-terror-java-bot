@@ -25,7 +25,7 @@ public class EventClientKill extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientKill(Client client, Client target, Mod mod) {
-        super("EVT_CLIENT_KILL");
+        super(EventType.EVT_CLIENT_KILL);
         this.client = client;
         this.target = target;
         this.mod = mod;

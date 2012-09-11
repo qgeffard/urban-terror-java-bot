@@ -18,7 +18,7 @@ public class EventGameWarmup extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventGameWarmup() {
-        super("EVT_GAME_WARMUP");
+        super(EventType.EVT_GAME_WARMUP);
     }
     
 }

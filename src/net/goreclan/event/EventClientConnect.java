@@ -22,7 +22,7 @@ public class EventClientConnect extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientConnect(Client client) {  
-        super("EVT_CLIENT_CONNECT");
+        super(EventType.EVT_CLIENT_CONNECT);
         this.client = client;
     }
     

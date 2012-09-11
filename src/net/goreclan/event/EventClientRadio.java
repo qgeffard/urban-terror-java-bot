@@ -26,7 +26,7 @@ public class EventClientRadio extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientRadio(Client client, Integer msg_group, Integer msg_id, String location, String message) {  
-        super("EVT_CLIENT_RADIO");
+        super(EventType.EVT_CLIENT_RADIO);
         this.client = client;
         this.msg_group = msg_group;
         this.msg_id = msg_id;

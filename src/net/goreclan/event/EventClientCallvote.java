@@ -24,7 +24,7 @@ public class EventClientCallvote extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientCallvote(Client client, String type, String data) {  
-        super("EVT_CLIENT_CALLVOTE");
+        super(EventType.EVT_CLIENT_CALLVOTE);
         this.client = client;
         this.type = type;
         this.data = data;

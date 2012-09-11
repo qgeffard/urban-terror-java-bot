@@ -22,7 +22,7 @@ public class EventSurvivorWinner extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventSurvivorWinner(Team team) {
-        super("EVT_SURVIVOR_WINNER");
+        super(EventType.EVT_SURVIVOR_WINNER);
         this.team = team;
     }
     

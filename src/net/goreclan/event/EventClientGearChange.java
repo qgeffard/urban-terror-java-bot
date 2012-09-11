@@ -25,7 +25,7 @@ public class EventClientGearChange extends Event {
      * @author Daniele Pantaleone 
      **/
     public EventClientGearChange(Client client, String before, String after) {
-        super("EVT_CLIENT_GEAR_CHANGE");
+        super(EventType.EVT_CLIENT_GEAR_CHANGE);
         this.client = client;
         this.before = before;
         this.after = after;
