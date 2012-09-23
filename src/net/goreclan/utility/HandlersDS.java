@@ -150,7 +150,7 @@ public class HandlersDS {
         
         Set<EventType> subscribedEvents = eventHandlers.get(handler);
         
-        if (subscribedEvents != null) {
+        if (subscribedEvents != null && !subscribedEvents.isEmpty()) {
             
             subscribedEvents.remove(eventType);
             if (subscribedEvents.isEmpty()) removedCount++;
@@ -171,7 +171,7 @@ public class HandlersDS {
         
         Set<EventType> subscribedEvents = eventHandlers.get(handler);
         
-        if (subscribedEvents != null) {
+        if (subscribedEvents != null && !subscribedEvents.isEmpty()) {
             
             subscribedEvents.clear();
             removedCount++;
