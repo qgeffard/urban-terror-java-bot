@@ -6,7 +6,7 @@
  * @author      Mathias Van Malderen
  * @version     1.0
  * @copyright   Mathias Van Malderen 08 July, 2012
- * @package     net.goreclan.utility.impl
+ * @package     net.goreclan.parser
  **/
 
 package net.goreclan.parser;
