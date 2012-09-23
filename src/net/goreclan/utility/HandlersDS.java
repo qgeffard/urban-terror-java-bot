@@ -23,7 +23,14 @@ import net.goreclan.event.EventType;
 public class HandlersDS {
     
     
-    /**
+	/**
+	 * The default setting for the autoOptimize field if there was no value
+	 * specified for it explicitly during HandlersDS construction.
+	 **/
+	public static final boolean AUTO_OPTIMIZATION_STRATEGY = true;
+	
+    
+	/**
      * The default percentage of EventHandlers with no registered EventTypes, which
      * - if exceeded - will trigger "garbage collection".
      **/
@@ -67,7 +74,19 @@ public class HandlersDS {
      * 
      * @author Mathias Van Malderen
      **/
-    public HandlersDS() { this(true, DEFAULT_GC_TRIGGER_PERCENTAGE); }
+    public HandlersDS() {
+    	this(AUTO_OPTIMIZATION_STRATEGY, DEFAULT_GC_TRIGGER_PERCENTAGE);
+    }
+    
+    
+    /**
+     * Class constructor.
+     * 
+     * @author Mathias Van Malderen
+     **/
+    public HandlersDS(boolean autoOptimizeMemoryUsage) {
+    	this(autoOptimizeMemoryUsage, DEFAULT_GC_TRIGGER_PERCENTAGE);
+    }
     
     
     /**
