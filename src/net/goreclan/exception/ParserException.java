@@ -7,9 +7,8 @@
 
 package net.goreclan.exception;
 
+@SuppressWarnings("serial")
 public class ParserException extends RuntimeException {
-    
-    private static final long serialVersionUID = 7319153488668927092L;
 
     /**
      * Class constructor
