@@ -264,8 +264,8 @@ public class HandlersDS {
         @Override
         public boolean hasNext() {
             
-        	if (current != null) return true;
-        	
+            if (current != null) return true;
+            
             while (iterator.hasNext()) {
                 
                 current = iterator.next();
