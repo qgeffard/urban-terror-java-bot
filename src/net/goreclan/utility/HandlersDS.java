@@ -16,6 +16,7 @@ import java.util.EnumSet;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import net.goreclan.event.EventType;
 
@@ -263,6 +264,8 @@ public class HandlersDS {
         @Override
         public boolean hasNext() {
             
+        	if (current != null) return true;
+        	
             while (iterator.hasNext()) {
                 
                 current = iterator.next();
@@ -286,7 +289,7 @@ public class HandlersDS {
         @Override
         public EventHandler next() {
             
-            if (current == null) throw new IllegalStateException();
+            if (!hasNext()) throw new NoSuchElementException();
             
             EventHandler handler = current.getKey();
             current = null;
