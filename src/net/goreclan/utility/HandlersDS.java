@@ -97,8 +97,8 @@ public class HandlersDS {
         // Generate an NPE to prevent null references from being added into
         // the handlers datastructure (and to prevent future NPEs when onEvent()
         // would be called for this null handler). An eventType of null would cause
-    	// the removedCount to be decremented unnecessarily since the EnumSet remains
-    	// empty. Therefore an NPE is thrown for eventType == null as well.
+        // the removedCount to be decremented unnecessarily since the EnumSet remains
+        // empty. Therefore an NPE is thrown for eventType == null as well.
         if (handler == null || eventType == null) throw new NullPointerException();
         
         // Get subscribed events for the specified event handler.
