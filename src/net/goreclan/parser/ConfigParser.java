@@ -41,7 +41,7 @@ public interface ConfigParser {
     /**
      * Read the option value of a configuration section as a Float.
      * 
-     * @return Float
+     * @return float
      * @author Mathias Van Malderen
      * @throws ParserException
      **/

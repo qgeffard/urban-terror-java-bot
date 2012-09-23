@@ -94,7 +94,7 @@ public class XmlConfigParser implements ConfigParser {
     /**
      * Read the option value of a configuration section as a Boolean.
      * 
-     * @return Boolean
+     * @return boolean
      * @author Mathias Van Malderen
      * @throws ParserException
      **/
@@ -103,7 +103,7 @@ public class XmlConfigParser implements ConfigParser {
         try {
             return BooleanParser.valueOf(this.getString(section, option));
         } catch (ParserException e) {
-            throw new ConfigParserException("The value cannot be parsed as a Boolean", section, option, e);
+            throw new ConfigParserException("The value cannot be parsed as a boolean", section, option, e);
         }
     }
     
@@ -111,7 +111,7 @@ public class XmlConfigParser implements ConfigParser {
     /**
      * Read the option value of a configuration section as a Double.
      * 
-     * @return Double
+     * @return double
      * @author Mathias Van Malderen
      * @throws ParserException
      **/
@@ -120,7 +120,7 @@ public class XmlConfigParser implements ConfigParser {
         try {
             return Double.valueOf(this.getString(section, option));
         } catch (NumberFormatException e) {
-            throw new ConfigParserException("The value cannot be parsed as a Double.", section, option, e);
+            throw new ConfigParserException("The value cannot be parsed as a double.", section, option, e);
         }
     }
     
@@ -128,7 +128,7 @@ public class XmlConfigParser implements ConfigParser {
     /**
      * Read the option value of a configuration section as a Float.
      * 
-     * @return Float
+     * @return float
      * @author Mathias Van Malderen
      * @throws ParserException
      **/
@@ -137,7 +137,7 @@ public class XmlConfigParser implements ConfigParser {
         try {
             return Float.valueOf(this.getString(section, option));
         } catch (NumberFormatException e) {
-            throw new ConfigParserException("The value cannot be parsed as a Float.", section, option, e);
+            throw new ConfigParserException("The value cannot be parsed as a float.", section, option, e);
         }
     }
     
@@ -145,7 +145,7 @@ public class XmlConfigParser implements ConfigParser {
     /**
      * Read the option value of a configuration section as an Integer.
      * 
-     * @return Integer
+     * @return int
      * @author Mathias Van Malderen
      * @throws ParserException
      **/
@@ -154,7 +154,7 @@ public class XmlConfigParser implements ConfigParser {
         try {
             return Integer.valueOf(this.getString(section, option));
         } catch (NumberFormatException e) {
-            throw new ConfigParserException("The value cannot be parsed as an Integer.", section, option, e);
+            throw new ConfigParserException("The value cannot be parsed as an integer.", section, option, e);
         }
     }
     
@@ -163,7 +163,7 @@ public class XmlConfigParser implements ConfigParser {
     /**
      * Read the option value of a configuration section as a Long.
      * 
-     * @return Long
+     * @return long
      * @author Mathias Van Malderen
      * @throws ParserException
      **/
@@ -180,7 +180,7 @@ public class XmlConfigParser implements ConfigParser {
     /**
      * Read the option value of a configuration section as a Short.
      * 
-     * @return Short
+     * @return short
      * @author Mathias Van Malderen
      * @throws ParserException
      **/
@@ -189,7 +189,7 @@ public class XmlConfigParser implements ConfigParser {
         try {
             return Short.valueOf(this.getString(section, option));
         } catch (NumberFormatException e) {
-            throw new ConfigParserException("The value cannot be parsed as a Short.", section, option, e);
+            throw new ConfigParserException("The value cannot be parsed as a short.", section, option, e);
         }
     }
     
