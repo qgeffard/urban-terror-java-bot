@@ -1,7 +1,7 @@
 /**
- * @author         Mathias Van Malderen
+ * @author      Mathias Van Malderen
  * @version     1.0
- * @copyright     Mathias Van Malderen, 09 July, 2012
+ * @copyright   Mathias Van Malderen, 09 July, 2012
  * @package     net.goreclan.exceptions.impl
  **/
 
