@@ -2,8 +2,8 @@
  * ioUrbanTerror 4.2 RCON Console implementation
  * 
  * @author      Daniele Pantaleone
- * @version     1.1
- * @copyright   Daniele Pantaleone, 01 July, 2012
+ * @version     1.2
+ * @copyright   Daniele Pantaleone, 04 October, 2012
  * @package     net.goreclan.console
  **/
 
@@ -25,63 +25,72 @@ import net.goreclan.parser.BooleanParser;
 
 public class Console {
     
-    private Rcon rcon = null;
+    private Rcon rcon;
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return Console
+     * @param  address The remote server address
+     * @param  port The virtual port on which the server is accepting connections
+     * @param  password The server Rcon password
      * @author Daniele Pantaleone 
+     * @return Console
      **/
-    public Console(String address, Integer port, String password) {
-    	// Configuring the RCON utility object
+    public Console(String address, int port, String password) {
+    	// Configuring the RCON utility object.
+    	// Console can't deal with the game without it.
         this.rcon = new Rcon(address, port, password);
     }
     
     
     /**
-     * Ban a player from the server permanently
+     * Ban a player from the server permanently.
      * 
      * @author Daniele Pantaleone
+     * @param  client The client to ban from the server
      * @throws IOException 
      **/
     public void ban(Client client) throws IOException {
-        this.rcon.sendNoRead(String.format("addip %s", client.ip));
+        this.rcon.sendNoRead("addip " + client.ip);
     }
     
     
     /**
-     * Ban an ip address from the server permanently
+     * Ban an ip address from the server permanently.
      * 
      * @author Daniele Pantaleone
+     * @param  ip The IP address to ban from the server
      * @throws IOException 
      **/
     public void ban(String ip) throws IOException {
-        this.rcon.sendNoRead(String.format("addip %s", ip));
+        this.rcon.sendNoRead("addip " + ip);
     }
     
     
     /**
      * Write a bold message in the middle of the screen of all players.
+     * The message is going to disappear in few seconds (almost 3).
      * 
      * @author Daniele Pantaleone
+     * @param  message The message to be printed
      * @throws IOException 
      **/
     public void bigtext(String message) throws IOException {
-        this.rcon.sendNoRead(String.format("bigtext \"%s\"", message));
+        this.rcon.sendNoRead("bigtext \"" + message + "\"");
     }
     
     
     /**
-     * Dump user information for the specified client
+     * Dump user information for the specified client.
      * 
-     * @return Map<String, String>
      * @author Daniele Pantaleone
+     * @param  client The client on who perform the dumpuser command
      * @throws IOException 
+     * @return Map<String, String>
      **/
     public Map<String, String> dumpuser(Client client) throws IOException {
         
-    	String result = this.rcon.sendRead(String.format("dumpuser %d", client.slot));
+    	String result = this.rcon.sendRead("dumpuser " + client.slot);
         
         // This is the string we expect from the /rcon dumpuser <slot> command.
         // We need to parse it and build an HashMap containing the client data.
@@ -91,33 +100,34 @@ public class Console {
         // ip                  93.40.100.128:59685
         // gear                GZJATWA
         // rate                25000
-        // name                Mr.Click
+        // name                [FS]Fenix
         // racered             2
         
-    	Map<String, String> dumpuser = new HashMap<String, String>();
+    	Map<String, String> map = new HashMap<String, String>();
         Pattern pattern = Pattern.compile("^\\s*([\\w]+)\\s+(.+)$");
         String[] lines = result.split("\n");
         
         for (String line: lines) {
             Matcher m = pattern.matcher(line);
-            if (m.matches()) dumpuser.put(m.group(1), m.group(2));
+            if (m.matches()) map.put(m.group(1), m.group(2));
         }
         
-        return dumpuser;
+        return map;
         
     }
     
     
     /**
-     * Dump user information for the specified player slot
+     * Dump user information for the specified player slot.
      * 
      * @return Map<String, String>
      * @author Daniele Pantaleone
+     * @param  slot The player slot on which perform the dumpuser command
      * @throws IOException 
      **/
-    public Map<String, String> dumpuser(Integer slot) throws IOException {
+    public Map<String, String> dumpuser(int slot) throws IOException {
         
-    	String result = this.rcon.sendRead(String.format("dumpuser %d", slot));
+    	String result = this.rcon.sendRead("dumpuser " + slot);
         
         // This is the string we expect from the /rcon dumpuser <slot> command.
         // We need to parse it and build an HashMap containing the client data.
@@ -127,19 +137,19 @@ public class Console {
         // ip                  93.40.100.128:59685
         // gear                GZJATWA
         // rate                25000
-        // name                Mr.Click
+        // name                [FS]Fenix
         // racered             2
         
-    	Map<String, String> dumpuser = new HashMap<String, String>();
+    	Map<String, String> map = new HashMap<String, String>();
         Pattern pattern = Pattern.compile("^\\s*([\\w]+)\\s+(.+)$");
         String[] lines = result.split("\n");
         
         for (String line: lines) {
             Matcher m = pattern.matcher(line);
-            if (m.matches()) dumpuser.put(m.group(1), m.group(2));
+            if (m.matches()) map.put(m.group(1), m.group(2));
         }
         
-        return dumpuser;
+        return map;
         
     }
         
@@ -148,12 +158,14 @@ public class Console {
      * Force a player in the blue team.
      * 
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be forced in the blue team
      * @throws IOException 
      **/
     public void forceblue(Client client) throws IOException {
-    	// Do not execute if the client is already in the specified team
+    	// Do not execute if the client is already in the specified team.
+    	// This will prevent to overflow the server with RCON commands.
     	if (client.team != Team.TEAM_BLUE)
-    		this.rcon.sendNoRead(String.format("forceteam %d blue", client.slot));
+    		this.rcon.sendNoRead("forceteam " + client.slot + " blue");
     }
     
     
@@ -161,13 +173,14 @@ public class Console {
      * Force a player in the blue team.
      * 
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be forced in the blue team
      * @throws IOException 
      **/
-    public void forceblue(Integer slot) throws IOException {
+    public void forceblue(int slot) throws IOException {
     	// Since we do not have a Client object as input, we cannot match the current
     	// client team. The RCON command is going to be executed anyway.
     	// NOTE: Use the previous version of the command if possible.
-    	this.rcon.sendNoRead(String.format("forceteam %d blue", slot));
+    	this.rcon.sendNoRead("forceteam " + slot + " blue");
     }
     
     
@@ -175,21 +188,23 @@ public class Console {
      * Force a player in the free team (autojoin).
 	 *
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be forced
      * @throws IOException 
      **/
     public void forcefree(Client client) throws IOException {
-    	this.rcon.sendNoRead(String.format("forceteam %d free", client.slot));
+    	this.rcon.sendNoRead("forceteam " + client.slot + " free");
     }
     
     
     /**
      * Force a player in the free team (autojoin).
-     * @return void
+     * 
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be forced
      * @throws IOException 
      **/
-    public void forcefree(Integer slot) throws IOException {
-    	this.rcon.sendNoRead(String.format("forceteam %d free", slot));
+    public void forcefree(int slot) throws IOException {
+    	this.rcon.sendNoRead("forceteam " + slot +" free");
     }
     
     
@@ -197,12 +212,14 @@ public class Console {
      * Force a player in the red team.
      * 
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be forced in the red team
      * @throws IOException 
      **/
     public void forcered(Client client) throws IOException {
-    	// Do not execute if the client is already in the specified team
+    	// Do not execute if the client is already in the specified team.
+    	// This will prevent to overflow the server with RCON commands.
     	if (client.team != Team.TEAM_RED)
-    		this.rcon.sendNoRead(String.format("forceteam %d red", client.slot));
+    		this.rcon.sendNoRead("forceteam " + client.slot +" red");
     }
     
     
@@ -210,13 +227,14 @@ public class Console {
      * Force a player in the red team.
      * 
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be forced in the red team
      * @throws IOException 
      **/
-    public void forcered(Integer slot) throws IOException {
+    public void forcered(int slot) throws IOException {
     	// Since we do not have a Client object as input, we cannot match the current
     	// client team. The RCON command is going to be executed anyway.
     	// NOTE: Use the previous version of the command if possible.
-    	this.rcon.sendNoRead(String.format("forceteam %d red", slot));
+    	this.rcon.sendNoRead("forceteam " + slot + " red");
     }
     
     
@@ -224,12 +242,14 @@ public class Console {
      * Force a player in the spectator team.
      * 
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be forced in the spectators team
      * @throws IOException 
      **/
     public void forcespec(Client client) throws IOException {
-    	// Do not execute if the client is already in the specified team
+    	// Do not execute if the client is already in the specified team.
+    	// This will prevent to overflow the server with RCON commands.
     	if (client.team != Team.TEAM_SPEC)
-    		this.rcon.sendNoRead(String.format("forceteam %d spectator", client.slot));
+    		this.rcon.sendNoRead("forceteam " + client.slot + " spectator");
     }
     
     
@@ -237,13 +257,14 @@ public class Console {
      * Force a player in the spectator team.
      * 
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be forced in the spectators team
      * @throws IOException 
      **/
-    public void forcespec(Integer slot) throws IOException {
+    public void forcespec(int slot) throws IOException {
     	// Since we do not have a Client object as input, we cannot match the current
     	// client team. The RCON command is going to be executed anyway.
     	// NOTE: Use the previous version of the command if possible.
-    	this.rcon.sendNoRead(String.format("forceteam %d spectator", slot));
+    	this.rcon.sendNoRead("forceteam " + slot + " spectator");
     }
     
     
@@ -251,10 +272,11 @@ public class Console {
      * Force the specified player substitute for his team (works only in match mode).
      * 
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be forced substitute
      * @throws IOException 
      **/
     public void forcesub(Client client) throws IOException {
-        this.rcon.sendNoRead(String.format("forcesub %d", client.slot));
+        this.rcon.sendNoRead("forcesub " + client.slot);
     }
     
     
@@ -262,10 +284,11 @@ public class Console {
      * Force the specified player substitute for his team (works only in match mode).
      * 
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be forced substitute
      * @throws IOException 
      **/
-    public void forcesub(Integer slot) throws IOException {
-        this.rcon.sendNoRead(String.format("forcesub %d", slot));
+    public void forcesub(int slot) throws IOException {
+        this.rcon.sendNoRead("forcesub " + slot);
     }
     
     
@@ -273,6 +296,8 @@ public class Console {
      * Force a player in the specified team.
 	 *
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be forced
+     * @param  team The team where to force the player in
      * @throws IOException 
      **/
     public void forceteam(Client client, Team team) throws IOException {
@@ -287,9 +312,11 @@ public class Console {
      * Force a player in the specified team.
 	 *
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be forced
+     * @param  team The team where to force the player in
      * @throws IOException 
      **/
-    public void forceteam(Integer slot, Team team) throws IOException {
+    public void forceteam(int slot, Team team) throws IOException {
     	if (team == Team.TEAM_RED) this.forcered(slot);
     	else if (team == Team.TEAM_BLUE) this.forceblue(slot);
     	else if (team == Team.TEAM_SPEC) this.forcespec(slot);
@@ -301,10 +328,12 @@ public class Console {
      * Force a player in the specified team.
 	 *
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be forced
+     * @param  teamname A string representing the name of the team where to force the player in
      * @throws IndexOutOfBoundsException
      * @throws IOException 
      **/
-    public void forceeam(Client client, String teamname) throws IndexOutOfBoundsException, IOException {
+    public void forceteam(Client client, String teamname) throws IndexOutOfBoundsException, IOException {
     	Team team = Team.getByName(teamname);
     	this.forceteam(client, team);
     }
@@ -314,10 +343,12 @@ public class Console {
      * Force a player in the specified team.
 	 *
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be forced
+     * @param  teamname A string representing the name of the team where to force the player in
      * @throws IndexOutOfBoundsException
      * @throws IOException 
      **/
-    public void forceteam(Integer slot, String teamname) throws IndexOutOfBoundsException, IOException {
+    public void forceteam(int slot, String teamname) throws IndexOutOfBoundsException, IOException {
     	Team team = Team.getByName(teamname);
     	this.forceteam(slot, team);
     }
@@ -346,33 +377,35 @@ public class Console {
     /**
      * Return the fraglimit value.
      * 
-     * @return String
      * @author Daniele Pantaleone 
-     * @throws IOException 
+     * @throws IOException
+     * @throws NumberFormatException 
+     * @return int
      **/
-    public Integer getFraglimit() throws IOException {
-        return new Integer(this.getCvar("fraglimit"));
+    public int getFraglimit() throws IOException, NumberFormatException {
+        return Integer.valueOf(this.getCvar("fraglimit"));
     }
     
     
     /**
      * Return the current gametype.
      * 
-     * @return Gametype
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException
+     * @throws NumberFormatException
+     * @return Gametype
      **/
-    public Gametype getGametype() throws IOException {
-        return Gametype.getByCode(new Integer(this.getCvar("g_gametype")));
+    public Gametype getGametype() throws IOException, NumberFormatException {
+        return Gametype.getByCode(Integer.valueOf(this.getCvar("g_gametype")));
     }
     
     
     /**
      * Return the current map name.
      * 
-     * @return String
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException
+     * @return String 
      **/
     public String getMap() throws IOException {
         
@@ -405,12 +438,12 @@ public class Console {
     /**
      * Return a boolean value which inform of match mode activated/deactivated.
      * 
-     * @return Boolean
+     * @return boolean
      * @author Daniele Pantaleone
      * @throws IOException 
      * @throws ParserException
      **/
-    public Boolean getMatchmode() throws IOException, ParserException {
+    public boolean getMatchmode() throws IOException, ParserException {
         return BooleanParser.valueOf(this.getCvar("g_matchmode"));       
     }
     
@@ -438,8 +471,9 @@ public class Console {
     	
         String result = this.rcon.sendRead("players");
         
-        // Do not bother us with Quake3 color codes.
-    	// We are going to remove them anyway.
+        // Quake3 color notations can be boring sometime.
+        // We are going to remove all the Quake3 color codes (^[0-9]) from the string
+        // returned by the server engine. We do not want to bother ourselves ^^.
     	
     	Pattern p = Pattern.compile("\\^[0-9]{1}");
         Matcher m = p.matcher(result);
@@ -451,9 +485,9 @@ public class Console {
         // Map: ut4_casa
         // Players: 1
         // Score: R:0 B:0
-        // 0:  [Gore]Fenix  SPECTATOR  k:0  d:0  ping:50  62.75.235.91:27960
+        // 0:  [FS]Fenix  SPECTATOR  k:0  d:0  ping:50  62.75.235.91:27960
         
-        List<List<String>> players = new ArrayList<List<String>>();
+        List<List<String>> collection = new ArrayList<List<String>>();
         Pattern pattern = Pattern.compile("^\\s*([\\d]+):\\s+(.*?)\\s+(RED|BLUE|SPECTATOR|FREE)\\s+k:([\\d]+)\\s+d:([\\d]+)\\s+ping:([\\d]+|CNCT|ZMBI)\\s*(([\\d.]+):([\\d-]+))?$", Pattern.CASE_INSENSITIVE);
         String[] lines = result.split("\n");
         
@@ -472,12 +506,12 @@ public class Console {
                 x.add(matcher.group(6));  // Ping
                 x.add(matcher.group(8));  // IP
                 x.add(matcher.group(9));  // Port
-                players.add(x);
+                collection.add(x);
                 
             }
         }
             
-        return players;
+        return collection;
         
     }
     
@@ -493,8 +527,9 @@ public class Console {
         
     	String result = this.rcon.sendRead("status");
     	
-    	// Do not bother us with Quake3 color codes.
-    	// We are going to remove them anyway.
+    	// Quake3 color notations can be boring sometime.
+        // We are going to remove all the Quake3 color codes (^[0-9]) from the string
+        // returned by the server engine. We do not want to bother ourselves ^^.
     	
     	Pattern p = Pattern.compile("\\^[0-9]{1}");
         Matcher m = p.matcher(result);
@@ -506,9 +541,9 @@ public class Console {
         // map: ut4_casa
         // num score ping name            lastmsg address               qport rate
         // --- ----- ---- --------------- ------- --------------------- ----- -----
-        //   1    19   33 l33tn1ck             33 62.212.106.216:27960   5294 25000
+        //   1    19   33 [FS]Fenix            33 62.212.106.216:27960   5294 25000
         
-    	List<List<String>> status = new ArrayList<List<String>>();
+    	List<List<String>> collection = new ArrayList<List<String>>();
         Pattern pattern = Pattern.compile("^\\s*([\\d]+)\\s+([\\d-]+)\\s+([\\d]+|CNCT|ZMBI)\\s+(.*?)\\s+([\\d]+)\\s+([\\d.]+):([\\d-]+)\\s+([\\d]+)\\s+([\\d]+)$", Pattern.CASE_INSENSITIVE);
         String[] lines = result.split("\n");
 
@@ -528,235 +563,238 @@ public class Console {
                 x.add(matcher.group(7));  // Port
                 x.add(matcher.group(8));  // QPort
                 x.add(matcher.group(9));  // Rate
-                status.add(x);
+                collection.add(x);
                 
             }
         }
         
-        return status;
+        return collection;
     }
     
     
     /**
      * Return the timelimit value.
      * 
-     * @return String
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException
+     * @throws NumberFormatException
+     * @return int
      **/
-    public Integer getTimelimit() throws IOException {
-        return new Integer(this.getCvar("timelimit"));
+    public int getTimelimit() throws IOException, NumberFormatException {
+        return Integer.valueOf(this.getCvar("timelimit"));
     }
     
     
     /**
      * Kick the specified client from the server.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be kicked from the server
      * @throws IOException 
      **/
     public void kick(Client client) throws IOException {
-        this.rcon.sendNoRead(String.format("kick %d", client.slot));
+        this.rcon.sendNoRead("kick " + client.slot);
     }
     
     
     /**
      * Kick the specified client from the server.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be kicked from the server
      * @throws IOException 
      **/
-    public void kick(Integer slot) throws IOException {
-        this.rcon.sendNoRead(String.format("kick %d", slot));
+    public void kick(int slot) throws IOException {
+        this.rcon.sendNoRead("kick " + slot);
     }
     
     
     /**
      * Kick the specified client from the server by specifying a reason.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be kicked from the server
+     * @param  reason The reason why the client is going to be kicked
      * @throws IOException 
      **/
     public void kick(Client client, String reason) throws IOException {
-        this.rcon.sendNoRead(String.format("kick %d \"%s\"", client.slot, reason));
+        this.rcon.sendNoRead("kick " + client.slot + reason);
     }
     
     
     /**
      * Kick the specified client from the server by specifying a reason.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be kicked from the server
+     * @param  reason The reason why the player with the specified slot is going to be kicked
      * @throws IOException 
      **/
-    public void kick(Integer slot, String reason) throws IOException {
-        this.rcon.sendNoRead(String.format("kick %d \"%s\"", slot, reason));
+    public void kick(int slot, String reason) throws IOException {
+    	this.rcon.sendNoRead("kick " + slot + reason);
     }
     
     
     /**
-     * Instantly kill a player..
+     * Instantly kill a player.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be killed
      * @throws IOException 
      **/
     public void kill(Client client) throws IOException {
-        this.rcon.sendNoRead(String.format("smite %d", client.slot));
+        this.rcon.sendNoRead("smite " + client.slot);
     }
     
     
     /**
-     * Instantly kill a player..
+     * Instantly kill a player.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be killed
      * @throws IOException 
      **/
-    public void kill(Integer slot) throws IOException {
-        this.rcon.sendNoRead(String.format("smite %d", slot));
+    public void kill(int slot) throws IOException {
+    	this.rcon.sendNoRead("smite " + slot);
     }
     
     
     /**
      * Change server current map.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  mapname The name of the map to load
      * @throws IOException 
      **/
     public void map(String mapname) throws IOException {
-        this.rcon.sendNoRead(String.format("map %s", mapname));
+        this.rcon.sendNoRead("map " + mapname);
     }
     
     
     /**
      * Mute a player.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  client The client who is going to be muted
      * @throws IOException 
      **/
     public void mute(Client client) throws IOException {
-        this.rcon.sendNoRead(String.format("mute %d", client.slot));
+        this.rcon.sendNoRead("mute " + client.slot);
     }
     
     
     /**
      * Mute a player.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  slot The slot of the player who is going to be muted
      * @throws IOException 
      **/
-    public void mute(Integer slot) throws IOException {
-        this.rcon.sendNoRead(String.format("mute %d", slot));
+    public void mute(int slot) throws IOException {
+        this.rcon.sendNoRead("mute " + slot);
     }
     
      
     /**
      * Nuke a player.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be nuked
      * @throws IOException 
      **/
     public void nuke(Client client) throws IOException {
-    	this.rcon.sendNoRead(String.format("nuke %d", client.slot));
+    	this.rcon.sendNoRead("nuke " + client.slot);
     }
     
     
     /**
      * Nuke a player.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be nuked
      * @throws IOException 
      **/
-    public void nuke(Integer slot) throws IOException {
-    	this.rcon.sendNoRead(String.format("nuke %d", slot));
+    public void nuke(int slot) throws IOException {
+    	this.rcon.sendNoRead("nuke " + slot);
     }
     
     
     /**
-     * Print a message in the in-game chat.
+     * Print a message to the in-game chat.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  message The message to print
      * @throws IOException 
      **/
     public void say(String message) throws IOException {
-        this.rcon.sendNoRead(String.format("say %s", message));
+        this.rcon.sendNoRead("say " + message);
     }
     
     
     /**
      * Set a cvar value.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  name The name of the cvar
+     * @param  value The value to assign to the cvar
      * @throws IOException 
      **/
     public void setCvar(String name, String value) throws IOException {
-        this.rcon.sendNoRead(String.format("set %s \"%s\"", name, value));
+        this.rcon.sendNoRead("set " + name + " \"" + value + "\"");
     }
     
     
     /**
      * Slap a player.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  client The client who is going to be slapped
      * @throws IOException 
      **/
-    public void slap(Client client) throws IndexOutOfBoundsException, IOException {
-        this.rcon.sendNoRead(String.format("slap %d", client.slot));
+    public void slap(Client client) throws IOException {
+        this.rcon.sendNoRead("slap " + client.slot);
     }
     
     
     /**
      * Slap a player.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player who is going to be slapped
      * @throws IOException 
      **/
-    public void slap(Integer slot) throws IOException {
-        this.rcon.sendNoRead(String.format("slap %d", slot));
+    public void slap(int slot) throws IOException {
+        this.rcon.sendNoRead("slap " + slot);
     }
     
     
     /**
      * Start recording a server side demo of a player.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  client The client whose we want to record a demo
      * @throws IOException 
      **/
     public void startserverdemo(Client client) throws IOException {
-        this.rcon.sendNoRead(String.format("startserverdemo %d", client.slot));
+        this.rcon.sendNoRead("startserverdemo " + client.slot);
     }
 
     
     /**
      * Start recording a server side demo of a player.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  slot The slot of the player whose we want to record a demo
      * @throws IOException 
      **/
-    public void startserverdemo(Integer slot) throws IOException {
-        this.rcon.sendNoRead(String.format("startserverdemo %d", slot));
+    public void startserverdemo(int slot) throws IOException {
+        this.rcon.sendNoRead("startserverdemo " + slot);
     }
     
     
     /**
      * Start recording a server side demo of all the online players.
      * 
-     * @return void
      * @author Daniele Pantaleone
      * @throws IOException 
      **/
@@ -768,31 +806,30 @@ public class Console {
     /**
      * Stop recording a server side demo of a player.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  client The client whose we want to stop a demo recording
      * @throws IOException 
      **/
     public void stopserverdemo(Client client) throws IOException {
-        this.rcon.sendNoRead(String.format("stopserverdemo %d", client.slot));
+        this.rcon.sendNoRead("stopserverdemo " + client.slot);
     }
     
     
     /**
      * Stop recording a server side demo of a player.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  slot The slot of the player whose we want to stop a demo recording
      * @throws IOException 
      **/
-    public void stopserverdemo(Integer slot) throws IOException {
-        this.rcon.sendNoRead(String.format("stopserverdemo %d", slot));
+    public void stopserverdemo(int slot) throws IOException {
+        this.rcon.sendNoRead("stopserverdemo " + slot);
     }
     
     
     /**
      * Stop recording a server side demo of all the online players.
      * 
-     * @return void
      * @author Daniele Pantaleone
      * @throws IOException 
      **/
@@ -804,32 +841,34 @@ public class Console {
     /**
      * Unban a player from the server.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  client The client we want to unban
      * @throws IOException 
      **/
     public void unban(Client client) throws IOException {
-        this.rcon.sendNoRead(String.format("removeip %s", client.ip));
+        this.rcon.sendNoRead("removeip " + client.ip);
     }
     
 
     /**
      * Unban a player from the server.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  ip The IP address of the player we want to unban
      * @throws IOException 
      **/
     public void unban(String ip) throws IOException {
-        this.rcon.sendNoRead(String.format("removeip %s", ip));
+        this.rcon.sendNoRead("removeip " + ip);
     }
     
     
     /**
-     * Write a message directly in the Urban Terror console
+     * Write a message directly in the Urban Terror console.
+     * Try to avoid the use of this command. Instead use the other 
+     * prebuild and optimized methods available in this class.
      * 
-     * @return void
      * @author Daniele Pantaleone
+     * @param  command The command to execute
      * @throws IOException 
      **/
     public String write(String command) throws IOException  {
