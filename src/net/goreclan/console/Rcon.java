@@ -1,9 +1,10 @@
 /**
- * This class represent a RCON connection interface.
+ * This class represent a RCON connection interface
+ * with a Urban Terror 4.2 server engine (Quake3-UrT[-ded]).
  *
  * @author      Daniele Pantaleone
- * @version     1.1
- * @copyright   Daniele Pantaleone, 29 June, 2012
+ * @version     1.2
+ * @copyright   Daniele Pantaleone, 04 October, 2012
  * @package     net.goreclan.console
  **/
 
@@ -21,19 +22,23 @@ import net.goreclan.logger.Log;
 public class Rcon {
     
     private InetAddress ip;
-    private Integer port;
+    private int port;
     private String password;
+    
     private DatagramSocket socket;
-    private Integer timeout = 10000;
+    private int timeout = 10000;
         
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return Rcon
+     * @param  address The remote server address
+     * @param  port The virtual port on which the server is accepting connections
+     * @param  password The server Rcon password
      * @author Daniele Pantaleone 
+     * @return Rcon
      **/
-    public Rcon(String address, Integer port, String password) {
+    public Rcon(String address, int port, String password) {
         
         try {
         	
@@ -43,11 +48,11 @@ public class Rcon {
             this.socket = new DatagramSocket();
             this.socket.setSoTimeout(this.timeout);
             
-            Log.bot(String.format("RCON configuration completed [ IP : %s | PORT : %d | PASSWORD : %s | TIMEOUT : %d ].", 
-            						 this.ip.getHostAddress(), 
-            						 this.port, 
-            						 this.password, 
-            						 this.timeout));
+            Log.bot("RCON interface configured [ " +
+            		"IP : " + this.ip.getHostAddress() + " | " +
+            	    "PORT : " + this.port + " | " +
+                    "PASSWORD : " + this.password + "| " +
+                    "TIMEOUT : " + this.timeout + "ms ]");
             
         } catch (UnknownHostException | SocketException e) {
             Log.error(e.toString());
@@ -59,15 +64,15 @@ public class Rcon {
     /**
      * Write a command in the RCON console without returning the server response.
      * 
-     * @return String
      * @author Daniele Pantaleone 
+     * @param  command The command to be sent to the server engine
      * @throws IOException 
 
      **/
     public void sendNoRead(String command) throws IOException {
         
-        Log.verbose(String.format("RCON sending [%s:%d]: %s", this.ip.getHostAddress(), this.port, command));
-        String send = String.format("xxxxrcon %s %s", this.password, command);
+        Log.verbose("RCON sending [" + this.ip.getHostAddress() + ":" + this.port + "]: " + command);
+        String send = "xxxxrcon " + this.password + " " + command;
         
         byte[] sendBuffer = send.getBytes();
         
@@ -76,25 +81,27 @@ public class Rcon {
         sendBuffer[2] = (byte)0xff; // Replacing 3rd byte with the correct OutOfBound byte
         sendBuffer[3] = (byte)0xff; // Replacing 4th byte with the correct OutOfBound byte
         
-        DatagramPacket sendPacket = new DatagramPacket(sendBuffer, sendBuffer.length, this.ip, this.port);
-        this.socket.send(sendPacket);
+        // Sending the command to the server engine. Exiting right after the send to succeed.
+        this.socket.send(new DatagramPacket(sendBuffer, sendBuffer.length, this.ip, this.port));
         
     }
     
     
     /**
      * Write a command in the RCON console and return the result.
-     * Note that this function simply return the string given back by the server engine without parsing the server response.
+     * Note that this function simply return the string given back 
+     * by the server engine without parsing the server response.
      * 
-     * @return String
      * @author Daniele Pantaleone 
+     * @param  command The command to be sent to the server engine
      * @throws IOException 
+     * @return String
 
      **/
     public String sendRead(String command) throws IOException {
         
-        Log.verbose(String.format("RCON sending [%s:%d]: %s", this.ip.getHostAddress(), this.port, command));
-        String send = String.format("xxxxrcon %s %s", this.password, command);
+    	Log.verbose("RCON sending [" + this.ip.getHostAddress() + ":" + this.port + "]: " + command);
+    	String send = "xxxxrcon " + this.password + " " + command;
         
         byte[] recvBuffer = new byte[1024];
         byte[] sendBuffer = send.getBytes();
