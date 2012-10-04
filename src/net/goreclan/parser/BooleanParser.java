@@ -35,7 +35,7 @@ public class BooleanParser {
      **/
     public static Boolean valueOf(String s) {
         Boolean value = stringToBoolean.get(s.toLowerCase());
-        if (value == null) throw new ParserException(String.format("Cannot parse String as Boolean: %s", s));
+        if (value == null) throw new ParserException(String.format("Unable to parse String as Boolean: %s", s));
         return value;
     }
     
