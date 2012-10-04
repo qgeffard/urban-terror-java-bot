@@ -1,9 +1,9 @@
 /**
- * This Enum handle the Urban Terror teams
+ * This Enum handle the Urban Terror teams.
  * 
  * @author      Daniele Pantaleone
- * @version     1.1
- * @copyright   Daniele Pantaleone, 15 July, 2012
+ * @version     1.2
+ * @copyright   Daniele Pantaleone, 04 October, 2012
  * @package     net.goreclan.iourt42
  **/
 
@@ -22,8 +22,8 @@ public enum Team {
     
     private static final Map<Integer, Team> teamByCode = new HashMap<Integer, Team>();
     private static final Map<String, Team> teamByName = new HashMap<String, Team>();
-    private Integer code = null;
-    private String  name = null;
+    private int code;
+    private String name;
     
     
     static {
@@ -35,22 +35,24 @@ public enum Team {
     
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
+     * @author Daniele Pantaleone
+     * @param  code The UrbanTerror 4.2 team code
+     * @param  name A string representing the team name
      * @return Team
-     * @author Daniele Pantaleone 
      **/
-    private Team(Integer code, String name) {
+    private Team(int code, String name) {
         this.code = code;
         this.name = name;
     }
     
     
     /**
-     * @return Integer
+     * @return int
      * @author Daniele Pantaleone
      */
-    public Integer getCode() {
+    public int getCode() {
         return code;
     }
     
@@ -65,50 +67,52 @@ public enum Team {
     
     
     /**
-     * Return a Team object by matching the Team code
+     * Return a Team object by matching the Team code.
      * 
-     * @return Team
      * @author Daniele Pantaleone
+     * @param  code The Urban Terror 4.2 team code
      * @throws IndexOutOfBoundException 
+     * @return Team
      */
     public static Team getByCode(Integer code) throws IndexOutOfBoundsException {
        
     	if (!teamByCode.containsKey(code)) 
-        	throw new IndexOutOfBoundsException(String.format("Invalid team code: %d.", code));
+        	throw new IndexOutOfBoundsException("Unable to match team code: " + code + ".");
         
         return teamByCode.get(code);
     }
     
     
     /**
-     * Return a Team object by matching the Team name
+     * Return a Team object by matching the Team name.
      * 
-     * @return Team
      * @author Daniele Pantaleone
+     * @param  name A string representing the team name
      * @throws IndexOutOfBoundException 
+     * @return Team
      */
     public static Team getByName(String name) throws IndexOutOfBoundsException {
     	
     	switch(name.toUpperCase()) {
-    		case 	"RED":  	  name = "TEAM_RED";  break;
-    		case    "R":		  name = "TEAM_RED";  break;
-    		case 	"BLUE": 	  name = "TEAM_BLUE"; break;
-    		case    "B":		  name = "TEAM_BLUE"; break;
-    		case 	"SPECTATOR":  name = "TEAM_SPEC"; break;
-    		case 	"SPEC":		  name = "TEAM_SPEC"; break;
-    		case    "S":		  name = "TEAM_SPEC"; break;
+    		case	"RED":  	  name = "TEAM_RED";  break;
+    		case	"R":		  name = "TEAM_RED";  break;
+    		case	"BLUE": 	  name = "TEAM_BLUE"; break;
+    		case	"B":		  name = "TEAM_BLUE"; break;
+    		case	"SPECTATOR":  name = "TEAM_SPEC"; break;
+    		case	"SPEC":		  name = "TEAM_SPEC"; break;
+    		case	"S":		  name = "TEAM_SPEC"; break;
     		case	"FREE":		  name = "TEAM_FREE"; break;
     	}	
     	
         if (!teamByName.containsKey(name.toUpperCase())) 
-        	throw new IndexOutOfBoundsException(String.format("Invalid team name: %s.", name.toUpperCase()));
+        	throw new IndexOutOfBoundsException("Unable to match team name: " + name.toUpperCase() + ".");
         
         return teamByName.get(name.toUpperCase());
     }
     
     
     /**
-     * String object representation
+     * String object representation.
      * 
      * @return String
      * @author Daniele Pantaleone
@@ -116,8 +120,7 @@ public enum Team {
     public String toString() {
         
     	// Returning a String object representation
-        return String.format("[ code : %d | name : %s ]", code, name);
-        
+    	return "[ code : " + this.code + " | name : " + this.name + " ]";
     }
     
 }
