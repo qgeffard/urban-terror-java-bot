@@ -1,9 +1,11 @@
 /**
- * This class provides a Factory implementation of a JDBC Connector against an SQLite 3 database
+ * This class goal is to return a connection with a MySQL DBMS.
+ * If the connection is not established yet, it create a new one 
+ * before returning the connection handler.
  *
  * @author      Daniele Pantaleone
  * @version     1.2
- * @copyright   Daniele Pantaleone, 26 June, 2012
+ * @copyright   Daniele Pantaleone, 05 October, 2012
  * @package     net.goreclan.utility
  **/
 
@@ -13,25 +15,27 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import net.goreclan.logger.Log;
-
 public class DataSourceManager {
     
-	private static String sqliteDB;
     private static Connection connection;
+    private static String username;
+    private static String password;
+    private static String dcs;
     
     
     /**
-     * @return Connection
+     * Return the connection with the MySQL DBMS.
+     * 
      * @author Daniele Pantaleone
      * @throws ClassNotFoundException 
      * @throws SQLException 
+     * @return Connection
      **/
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         
         if (connection == null) {
-        	Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection(String.format("jdbc:sqlite:%s", sqliteDB));
+        	Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(dcs, username, password);
             connection.setAutoCommit(true);
         }
         
@@ -41,13 +45,38 @@ public class DataSourceManager {
     
     
     /**
-     * Set the SQLite database absoulte file path
+     * Set the MySQL DBMS access username.
      * 
      * @author Daniele Pantaleone
+     * @param  username The username to be set
      **/
-    public static void setSQLiteDB(String sqliteDB) {
-        Log.debug(String.format("Using SQLite database: %s.", sqliteDB));
-        DataSourceManager.sqliteDB = sqliteDB;
+    public static void setUsername(String username) {
+    	DataSourceManager.username = username;
     }
+    
+    
+    /**
+     * Set the MySQL DBMS access password.
+     * 
+     * @author Daniele Pantaleone
+     * @param  password The password to be set
+     **/
+    public static void setPassword(String password) {
+    	DataSourceManager.password = password;
+    }
+    
+    
+    /**
+     * Set the MySQL DBMS DCS (Database Connection String).
+     * 
+     * @author Daniele Pantaleone
+     * @param  dcs The database connection string
+     **/
+    public static void setDCS(String dcs) {
+    	DataSourceManager.dcs = dcs;
+    }
+    
+    
+   
 
 }
