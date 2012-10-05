@@ -28,7 +28,7 @@ public class AliasDAO {
 	
     private static final String LOAD = "SELECT `client_id`, `name`, `num_used`, `time_add`, `time_edit` FROM `aliases` WHERE `id` = ?";
     
-    private static final String INSERT = "INSERT INTO `aliases` (`client_id`, `name`, `num_used`, `time_add`) VALUES (?,?,?,?)";
+    private static final String INSERT = "INSERT INTO `aliases` (`client_id`, `name`, `num_used`, `time_add`, `time_edit`) VALUES (?,?,?,?,?)";
     
     private static final String UPDATE = "UPDATE `aliases` SET `client_id` = ?, `name` = ?, `num_used` = ?, `time_edit` = ? WHERE `id` = ?";
     
@@ -87,9 +87,12 @@ public class AliasDAO {
     	statement.setString(2, alias.name);
     	statement.setInt(3, alias.num_used);
     	statement.setLong(4, alias.time_add.getTime());
+    	statement.setLong(5, alias.time_edit.getTime());
+    	
+    	// Executing the statement.
     	statement.executeUpdate();
     	
-    	// Storing the new generated alias id
+    	// Storing the new generated alias id.
     	resultset = statement.getGeneratedKeys();
     	alias.id = resultset.getInt(1);
         
@@ -118,6 +121,8 @@ public class AliasDAO {
     	statement.setInt(3, alias.num_used);
     	statement.setLong(4, alias.time_edit.getTime());
     	statement.setInt(5, alias.id);
+    	
+    	// Executing the statement.
     	statement.executeUpdate();
     	statement.close();
         
@@ -139,6 +144,8 @@ public class AliasDAO {
         
     	statement = connection.prepareStatement(DELETE);
     	statement.setInt(1, alias.id);
+    	
+    	// Executing the statement.
     	statement.executeUpdate();
     	statement.close();
         
