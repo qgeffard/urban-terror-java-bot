@@ -69,6 +69,7 @@ public class GroupDAO {
      * Create a new entry in the database for the current object
      * 
      * @author Daniele Pantaleone
+     * @param  group The group whose informations needs to be stored
      * @throws ClassNotFoundException
      * @throws SQLException 
      **/
@@ -92,6 +93,7 @@ public class GroupDAO {
      * Update domain object in the database
      * 
      * @author Daniele Pantaleone
+     * @param  group The group whose informations needs to be updated
      * @throws ClassNotFoundException
      * @throws SQLException 
      **/
@@ -115,6 +117,7 @@ public class GroupDAO {
      * Delete domain object from the database
      * 
      * @author Daniele Pantaleone
+     * @param  group The group whose informations needs to be deleted
      * @throws ClassNotFoundException
      * @throws SQLException 
      **/
