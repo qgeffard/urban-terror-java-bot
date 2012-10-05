@@ -176,6 +176,8 @@ public class ClientDAO {
         
     	statement = connection.prepareStatement(DELETE);
     	statement.setInt(1, client.id);
+    	
+    	// Executing the statement.
     	statement.executeUpdate();
         statement.close();
         
