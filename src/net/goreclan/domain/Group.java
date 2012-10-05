@@ -15,14 +15,14 @@ import net.goreclan.dao.GroupDAO;
 
 public class Group {
     
-    public Integer id;
+    public int id;
     public String name;
     public String keyword;
-    public Integer level;
+    public int level;
   
     
     /**
-     * Load object attributes using the DAO object interface
+     * Load object attributes using the DAO interface.
      * 
      * @author Daniele Pantaleone
      * @throws ClassNotFoundException 
@@ -34,7 +34,7 @@ public class Group {
     
     
     /**
-     * Create a new entry in the database for the current object using the DAO object interface
+     * Create a new entry in the database for the current object using the DAO interface.
      * 
      * @author Daniele Pantaleone
      * @throws ClassNotFoundException 
@@ -46,7 +46,7 @@ public class Group {
     
     
     /**
-     * Update domain object in the database using the DAO object interface
+     * Update domain object in the database using the DAO interface.
      * 
      * @author Daniele Pantaleone
      * @throws ClassNotFoundException 
@@ -58,7 +58,7 @@ public class Group {
     
     
     /**
-     * Delete domain object from the database using the DAO object interface
+     * Delete domain object from the database using the DAO interface.
      * 
      * @author Daniele Pantaleone
      * @throws ClassNotFoundException 
@@ -76,10 +76,10 @@ public class Group {
      * @author Daniele Pantaleone
      **/
     public String toString() {
-                
-    	// Returning a String object representation
-        return String.format("[ id : %d | name : %s | keyword : %s | level | %d ]", id, name, keyword, level);
         
+    	// Returning a string object representation.
+    	return "[ id : " + id + " | name : " + name + " | keyword : " + keyword + " | level : " + level + " ]";
+ 
     }
     
 }
