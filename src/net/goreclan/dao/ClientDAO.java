@@ -2,7 +2,7 @@
  * This class represent a DAO Interface with the "clients" database table.
  *
  * @author      Daniele Pantaleone
- * @version     1.2
+ * @version     1.2.1
  * @copyright   Daniele Pantaleone, 05 October, 2012
  * @package     net.goreclan.dao
  **/
@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Date;
 
 import net.goreclan.domain.Client;
@@ -41,9 +42,9 @@ public class ClientDAO {
                                               "FROM `clients` AS `cl` INNER JOIN `groups` AS `gr` " +
                                               "ON `cl`.`group_id` = `gr`.`id` WHERE `cl`.`id` = ?";
     
-    private static final String INSERT = "INSERT INTO `clients` (`group_id`, `name`, `ip`, `guid`, `auth`, `time_add`) VALUES (?,?,?,?,?,?)";
+    private static final String INSERT = "INSERT INTO `clients` (`group_id`, `name`, `ip`, `guid`, `auth`, `time_add`, `time_edit`) VALUES (?,?,?,?,?,?,?)";
     
-    private static final String UPDATE = "UPDATE `clients` SET `group_id` = ?, `name` = ?, `connections` = ?, `ip` = ?, `guid` = ?, `auth` = ?, `time_add` = ?, `time_edit`= ? WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `clients` SET `group_id` = ?, `name` = ?, `connections` = ?, `ip` = ?, `guid` = ?, `auth` = ?, `time_edit`= ? WHERE `id` = ?";
     
     private static final String DELETE = "DELETE FROM `clients` WHERE `id` = ?";
     
@@ -67,16 +68,16 @@ public class ClientDAO {
         resultset = statement.executeQuery();
         
         if (!resultset.next())
-        	throw new RecordNotFoundException("Unable to find a match for client: @" + client.id + ".");
+        	throw new RecordNotFoundException("Unable to find a match for client: " + client.id + ".");
         
-        // Creating the Group object
+        // Creating the Group object.
         Group group = new Group();
         group.id = resultset.getInt("gr_id");
         group.name = resultset.getString("gr_name");
         group.keyword = resultset.getString("gr_keyword");
         group.level = resultset.getInt("gr_level");
         
-        // Storing the client data
+        // Storing the client data.
         client.group = group;
         client.name = resultset.getString("cl_name");
         client.connections = resultset.getInt("cl_connections");
@@ -85,6 +86,7 @@ public class ClientDAO {
         client.auth = resultset.getString("cl_auth");
         client.time_add = new Date(resultset.getLong("cl_time_add"));
         client.time_edit = new Date(resultset.getLong("cl_time_edit"));
+        if (resultset.wasNull()) client.time_edit = null;
             
         resultset.close();
         statement.close();
@@ -110,11 +112,15 @@ public class ClientDAO {
     	statement.setString(2, client.name);
     	statement.setString(3, client.ip);
     	statement.setString(4, client.guid);
-    	statement.setString(5, client.auth);
+    	if (client.auth != null) statement.setString(5, client.auth);
+    	else statement.setNull(5, Types.VARCHAR);
     	statement.setLong(6, client.time_add.getTime());
-    	statement.executeUpdate();
+    	statement.setLong(7, client.time_edit.getTime());
     	
-    	// Storing the new generated client id
+    	// Executing the statement.
+    	statement.executeUpdate();
+    	 
+    	// Storing the new generated client id.
     	resultset = statement.getGeneratedKeys();
     	client.id = resultset.getInt(1);
         
@@ -143,10 +149,12 @@ public class ClientDAO {
     	statement.setInt(3, client.connections);
     	statement.setString(4, client.ip);
     	statement.setString(5, client.guid);
-    	statement.setString(6, client.auth);
-    	statement.setLong(7, client.time_add.getTime());
-        statement.setLong(8, client.time_edit.getTime());
-        statement.setInt(9, client.id);
+    	if (client.auth != null) statement.setString(6, client.auth);
+    	else statement.setNull(6, Types.VARCHAR);
+        statement.setLong(7, client.time_edit.getTime());
+        statement.setInt(8, client.id);
+        
+        // Executing the statement.
         statement.executeUpdate();
         statement.close();
         
