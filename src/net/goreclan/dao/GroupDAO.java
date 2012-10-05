@@ -2,8 +2,8 @@
  * This class represent a DAO Interface with the "groups" database table.
  *
  * @author      Daniele Pantaleone
- * @version     1.0
- * @copyright   Daniele Pantaleone, 28 June, 2012
+ * @version     1.1
+ * @copyright   Daniele Pantaleone, 05 October, 2012
  * @package     net.goreclan.dao
  **/
 
@@ -15,51 +15,53 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import net.goreclan.domain.Group;
+import net.goreclan.exception.RecordNotFoundException;
 import net.goreclan.utility.DataSourceManager;
 
 public class GroupDAO {
     
-	private static Connection conn;
-	private static PreparedStatement stmt;
-	private static ResultSet rs;
+	private static Connection connection;
+	private static PreparedStatement statement;
+	private static ResultSet resultset;
 	
     private static final String LOAD = "SELECT `name`, `keyword`, `level` FROM `groups` WHERE `id` = ?";
     
-    public static final String INSERT = "INSERT INTO `groups` (`id`, `name`, `keyword`, `level`) VALUES (?,?,?,?)";
+    private static final String INSERT = "INSERT INTO `groups` (`id`, `name`, `keyword`, `level`) VALUES (?,?,?,?)";
     
-    public static final String UPDATE = "UPDATE `groups` SET `name` = ?, `keyword` = ?, `level` = ? WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `groups` SET `name` = ?, `keyword` = ?, `level` = ? WHERE `id` = ?";
     
-    public static final String DELETE = "DELETE FROM `groups` WHERE `id` = ?";
+    private static final String DELETE = "DELETE FROM `groups` WHERE `id` = ?";
     
     
     /**
-     * Load values from the database and fill object attributes
+     * Load values from the database and fill object attributes.
      * 
      * @author Daniele Pantaleone
+     * @param  group The group object where to store data
      * @throws ClassNotFoundException
      * @throws SQLException 
+     * @throws RecordNotFoundException 
      **/
-    public static void load(Group group) throws ClassNotFoundException, SQLException {
+    public static void load(Group group) throws ClassNotFoundException, SQLException, RecordNotFoundException {
         
-    	if (conn == null || conn.isClosed()) 
-    		conn = DataSourceManager.getConnection();
+    	if (connection == null || connection.isClosed()) 
+    		connection = DataSourceManager.getConnection();
         
-    	stmt = conn.prepareStatement(LOAD);
-        stmt.setInt(1, group.id);
-        rs = stmt.executeQuery();
+    	statement = connection.prepareStatement(LOAD);
+    	statement.setInt(1, group.id);
+    	resultset = statement.executeQuery();
         
-        if (rs.next()) {
-        	
-        	// Filling object attributes
-            group.name = rs.getString("name");
-            group.keyword = rs.getString("keyword");
-            group.level = rs.getInt("level");
-            
-        }
+    	if (!resultset.next())
+        	throw new RecordNotFoundException("Unable to find a match for group: " + group.id + ".");
+    	
+    	// Storing the group data
+        group.name = resultset.getString("name");
+        group.keyword = resultset.getString("keyword");
+        group.level = resultset.getInt("level");
 
-        // Closing current ResultSet and Prepared Statement
-        if (rs != null) rs.close();
-        if (stmt != null) stmt.close();
+        resultset.close();
+        statement.close();
+        
     }
     
     
@@ -72,18 +74,16 @@ public class GroupDAO {
      **/
     public static void insert(Group group) throws ClassNotFoundException, SQLException { 
         
-    	if (conn == null || conn.isClosed()) 
-    		conn = DataSourceManager.getConnection();
+    	if (connection == null || connection.isClosed()) 
+    		connection = DataSourceManager.getConnection();
     	
-    	stmt = conn.prepareStatement(INSERT);
-        stmt.setInt(1, group.id);
-        stmt.setString(2, group.name);
-        stmt.setString(3, group.keyword);
-        stmt.setInt(4, group.level);
-        stmt.executeUpdate();
-        
-        // Closing current Prepared Statement
-        if (stmt != null) stmt.close();      
+    	statement = connection.prepareStatement(INSERT);
+    	statement.setInt(1, group.id);
+    	statement.setString(2, group.name);
+    	statement.setString(3, group.keyword);
+    	statement.setInt(4, group.level);
+    	statement.executeUpdate();
+        statement.close();      
         
     }
     
@@ -97,18 +97,16 @@ public class GroupDAO {
      **/
     public static void update(Group group) throws ClassNotFoundException, SQLException { 
         
-    	if (conn == null || conn.isClosed()) 
-    		conn = DataSourceManager.getConnection();
+    	if (connection == null || connection.isClosed()) 
+    		connection = DataSourceManager.getConnection();
         
-    	stmt = conn.prepareStatement(UPDATE);
-    	stmt.setString(1, group.name);
-    	stmt.setString(2, group.keyword);
-    	stmt.setInt(3, group.level);
-    	stmt.setInt(4, group.id);
-    	stmt.executeUpdate();
-        
-    	// Closing current Prepared Statement
-        if (stmt != null) stmt.close(); 
+    	statement = connection.prepareStatement(UPDATE);
+    	statement.setString(1, group.name);
+    	statement.setString(2, group.keyword);
+    	statement.setInt(3, group.level);
+    	statement.setInt(4, group.id);
+    	statement.executeUpdate();
+        statement.close(); 
             
     }
     
@@ -122,15 +120,13 @@ public class GroupDAO {
      **/
     public static void delete(Group group) throws ClassNotFoundException, SQLException { 
     	
-    	if (conn == null || conn.isClosed()) 
-    		conn = DataSourceManager.getConnection();
+    	if (connection == null || connection.isClosed()) 
+    		connection = DataSourceManager.getConnection();
 
-        stmt = conn.prepareStatement(DELETE);
-        stmt.setInt(1, group.id);
-        stmt.executeUpdate();
-        
-        // Closing current Prepared Statement
-        if (stmt != null) stmt.close(); 
+    	statement = connection.prepareStatement(DELETE);
+        statement.setInt(1, group.id);
+        statement.executeUpdate();
+        statement.close(); 
         
     }
     
