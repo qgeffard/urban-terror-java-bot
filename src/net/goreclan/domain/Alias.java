@@ -1,9 +1,9 @@
 /**
  * This class represents a Value Object matching an "aliases" database table entry.
  * 
- * @author      Mathias Van Malderen
- * @version     1.0
- * @copyright   Mathias Van Malderen, 27 June, 2012
+ * @author      Mathias Van Malderen, Daniele Pantaleone
+ * @version     1.1
+ * @copyright   Mathias Van Malderen, 05 October, 2012
  * @package     net.goreclan.domain
  **/
 
@@ -13,13 +13,14 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import net.goreclan.dao.AliasDAO;
+import net.goreclan.exception.RecordNotFoundException;
 
 public class Alias {
     
-	public Integer id;
-	public Integer client_id;
+	public int id;
+	public int client_id;
 	public String name;
-	public Integer num_used;
+	public int num_used;
 	public Date time_add;
 	public Date time_edit;
     
@@ -31,8 +32,9 @@ public class Alias {
      * @author Mathias Van Malderen
      * @throws ClassNotFoundException 
      * @throws SQLException 
+     * @throws RecordNotFoundException 
      **/
-    public void load() throws ClassNotFoundException, SQLException {
+    public void load() throws ClassNotFoundException, SQLException, RecordNotFoundException {
         AliasDAO.load(this);
     }
     
@@ -84,8 +86,8 @@ public class Alias {
      **/
     public String toString() {
     	
-        // Returning a String object representation
-        return String.format("[ id : %d | client_id : %d | name : %d | num_used : %d ]", id, client_id, name, num_used);
+    	// Returning a string object representation.
+    	return "[ id : " + id + " | name : " + name + " | num_used : " + num_used + " ]";
         
     }
     
