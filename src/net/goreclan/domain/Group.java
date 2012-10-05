@@ -2,8 +2,8 @@
  * This class represent a Value Object matching a "groups" database table entry.
  *
  * @author      Daniele Pantaleone
- * @version     1.1
- * @copyright   Daniele Pantaleone, 26 June, 2012
+ * @version     1.2
+ * @copyright   Daniele Pantaleone, 05 October, 2012
  * @package     net.goreclan.domain
  **/
 
@@ -12,6 +12,7 @@ package net.goreclan.domain;
 import java.sql.SQLException;
 
 import net.goreclan.dao.GroupDAO;
+import net.goreclan.exception.RecordNotFoundException;
 
 public class Group {
     
@@ -27,8 +28,9 @@ public class Group {
      * @author Daniele Pantaleone
      * @throws ClassNotFoundException 
      * @throws SQLException 
+     * @throws RecordNotFoundException 
      **/
-    public void load() throws ClassNotFoundException, SQLException {
+    public void load() throws ClassNotFoundException, SQLException, RecordNotFoundException {
         GroupDAO.load(this);
     }
     
