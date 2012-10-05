@@ -41,11 +41,11 @@ public class ClientDAO {
                                               "FROM `clients` AS `cl` INNER JOIN `groups` AS `gr` " +
                                               "ON `cl`.`group_id` = `gr`.`id` WHERE `cl`.`id` = ?";
     
-    public static final String INSERT = "INSERT INTO `clients` (`group_id`, `name`, `ip`, `guid`, `auth`, `time_add`) VALUES (?,?,?,?,?,?)";
+    private static final String INSERT = "INSERT INTO `clients` (`group_id`, `name`, `ip`, `guid`, `auth`, `time_add`) VALUES (?,?,?,?,?,?)";
     
-    public static final String UPDATE = "UPDATE `clients` SET `group_id` = ?, `name` = ?, `connections` = ?, `ip` = ?, `guid` = ?, `auth` = ?, `time_add` = ?, `time_edit`= ? WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `clients` SET `group_id` = ?, `name` = ?, `connections` = ?, `ip` = ?, `guid` = ?, `auth` = ?, `time_add` = ?, `time_edit`= ? WHERE `id` = ?";
     
-    public static final String DELETE = "DELETE FROM `clients` WHERE `id` = ?";
+    private static final String DELETE = "DELETE FROM `clients` WHERE `id` = ?";
     
     
     /**
