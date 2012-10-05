@@ -2,7 +2,7 @@
  * This class represent a DAO Interface with the "penalties" database table.
  *
  * @author      Daniele Pantaleone
- * @version     1.0
+ * @version     1.0.1
  * @copyright   Daniele Pantaleone, 05 October, 2012
  * @package     net.goreclan.dao
  **/
@@ -31,7 +31,7 @@ public class PenaltyDAO {
     
     private static final String INSERT = "INSERT INTO `penalties` (`client_id`, `admin_id`, `type`, `active`, `reason`, `time_add`, `time_edit`, `time_expire`) VALUES (?,?,?,?,?,?,?,?)";
     
-    private static final String UPDATE = "UPDATE `penalties` SET `client_id` = ?, `admin_id` = ?, `type` = ?, `active` = ?, `reason` = ?, `time_add` = ?, `time_edit` = ?, `time_expire`= ? WHERE `id` = ?";
+    private static final String UPDATE = "UPDATE `penalties` SET `client_id` = ?, `admin_id` = ?, `type` = ?, `active` = ?, `reason` = ?, `time_edit` = ?, `time_expire`= ? WHERE `id` = ?";
     
     private static final String DELETE = "DELETE FROM `penalties` WHERE `id` = ?";
     
@@ -96,13 +96,14 @@ public class PenaltyDAO {
     	if (penalty.reason != null) statement.setString(5, penalty.reason);
     	else statement.setNull(5, Types.VARCHAR);
     	statement.setLong(6, penalty.time_add.getTime());
-    	if (penalty.time_edit != null) statement.setLong(7, penalty.time_edit.getTime());
-    	else statement.setNull(7, Types.BIGINT);
+    	statement.setLong(7, penalty.time_edit.getTime());
     	if (penalty.time_expire != null) statement.setLong(8, penalty.time_expire.getTime());
     	else statement.setNull(8, Types.BIGINT);
+    	
+    	// Executing the statement.
     	statement.executeUpdate();
 
-    	// Storing the new generated penalty id
+    	// Storing the new generated penalty id.
     	resultset = statement.getGeneratedKeys();
     	penalty.id = resultset.getInt(1);
         
@@ -132,13 +133,12 @@ public class PenaltyDAO {
     	statement.setBoolean(4, penalty.active);
     	if (penalty.reason != null) statement.setString(5, penalty.reason);
     	else statement.setNull(5, Types.VARCHAR);
-    	statement.setLong(6, penalty.time_add.getTime());
-    	if (penalty.time_edit != null) statement.setLong(7, penalty.time_edit.getTime());
+    	statement.setLong(6, penalty.time_edit.getTime());
+    	if (penalty.time_expire != null) statement.setLong(7, penalty.time_expire.getTime());
     	else statement.setNull(7, Types.BIGINT);
-    	if (penalty.time_expire != null) statement.setLong(8, penalty.time_expire.getTime());
-    	else statement.setNull(8, Types.BIGINT);
-    	statement.executeUpdate();
-        statement.setInt(9, penalty.id);
+    	statement.setInt(9, penalty.id);
+
+    	// Executing the statement.
         statement.executeUpdate();
         statement.close();
         
@@ -160,6 +160,8 @@ public class PenaltyDAO {
         
     	statement = connection.prepareStatement(DELETE);
     	statement.setInt(1, penalty.id);
+    	
+    	// Executing the statement.
     	statement.executeUpdate();
         statement.close();
         
