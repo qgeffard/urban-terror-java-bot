@@ -1,8 +1,8 @@
 /**
- * An XML Configuration parser for files.
+ * XML configuration parser
  * 
- * @author      Mathias Van Malderen
- * @version     1.0
+ * @author      Mathias Van Malderen, Daniele Pantaleone
+ * @version     1.1
  * @copyright   Mathias Van Malderen 08 July, 2012
  * @package     net.goreclan.parser
  **/
@@ -26,10 +26,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import net.goreclan.exception.ConfigParserException;
-import net.goreclan.exception.ParserException;
+import net.goreclan.exception.XmlConfigParserException;
 
-public class XmlConfigParser implements ConfigParser {
+public class XmlConfigParser {
     
     private static final String SECTION_XPATH = "/configuration/settings[@name='%s']/set";
     private static final String SETTING_XPATH = SECTION_XPATH + "[@name='%s']";
@@ -43,10 +42,10 @@ public class XmlConfigParser implements ConfigParser {
      * Class constructor.
      * 
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    public XmlConfigParser(String configPath) throws ParserException {
-        this(new File(configPath));        
+    public XmlConfigParser(String path) throws XmlConfigParserException {
+        this(new File(path));        
     }
     
     
@@ -54,16 +53,16 @@ public class XmlConfigParser implements ConfigParser {
      * Class constructor.
      * 
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    public XmlConfigParser(File configPath) throws ParserException {
+    public XmlConfigParser(File configPath) throws XmlConfigParserException {
         
         try {
             builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             xpath = XPathFactory.newInstance().newXPath();
             document = builder.parse(configPath);
         } catch (IOException | SAXException | ParserConfigurationException e) {
-            throw new ParserException("An error occured while initializing the XML parser.", e);
+            throw new XmlConfigParserException("Unable to initialize XML configuration parser.", e);
         }
         
     }
@@ -94,86 +93,65 @@ public class XmlConfigParser implements ConfigParser {
     /**
      * Read the option value of a configuration section as a Boolean.
      * 
-     * @return boolean
+     * @return Boolean
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    @Override
-    public boolean getBoolean(String section, String option) throws ParserException {
-        try {
-            return BooleanParser.valueOf(this.getString(section, option));
-        } catch (ParserException e) {
-            throw new ConfigParserException("The value cannot be parsed as a boolean", section, option, e);
-        }
+    public boolean getBoolean(String section, String option) throws XmlConfigParserException {
+        return BooleanParser.valueOf(this.getString(section, option));
     }
     
-    
+
     /**
      * Read the option value of a configuration section as a Double.
      * 
-     * @return double
+     * @return Double
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    @Override
-    public double getDouble(String section, String option) throws ParserException {
-        try {
-            return Double.valueOf(this.getString(section, option));
-        } catch (NumberFormatException e) {
-            throw new ConfigParserException("The value cannot be parsed as a double.", section, option, e);
-        }
+    public double getDouble(String section, String option) throws XmlConfigParserException {
+        try { return Double.valueOf(this.getString(section, option)); } 
+        catch (NumberFormatException e) { throw new XmlConfigParserException("Unable parse this value as a Double", section, option, e); }
     }
     
     
     /**
      * Read the option value of a configuration section as a Float.
      * 
-     * @return float
+     * @return Float
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    @Override
-    public float getFloat(String section, String option) throws ParserException {
-        try {
-            return Float.valueOf(this.getString(section, option));
-        } catch (NumberFormatException e) {
-            throw new ConfigParserException("The value cannot be parsed as a float.", section, option, e);
-        }
+    public float getFloat(String section, String option) throws XmlConfigParserException {
+        try { return Float.valueOf(this.getString(section, option)); } 
+        catch (NumberFormatException e) { throw new XmlConfigParserException("Unable to parse this value as a Float", section, option, e); }
     }
     
     
     /**
      * Read the option value of a configuration section as an Integer.
      * 
-     * @return int
+     * @return Integer
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    @Override
-    public int getInteger(String section, String option) throws ParserException {
-        try {
-            return Integer.valueOf(this.getString(section, option));
-        } catch (NumberFormatException e) {
-            throw new ConfigParserException("The value cannot be parsed as an integer.", section, option, e);
-        }
+    public int getInteger(String section, String option) throws XmlConfigParserException {
+        try { return Integer.valueOf(this.getString(section, option)); } 
+        catch (NumberFormatException e) { throw new XmlConfigParserException("Unable to parse this values as an Integer", section, option, e); }
     }
     
     
-
     /**
      * Read the option value of a configuration section as a Long.
      * 
-     * @return long
+     * @return Long
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    @Override
-    public long getLong(String section, String option) throws ParserException {
-        try {
-            return Long.valueOf(this.getString(section, option));
-        } catch (NumberFormatException e) {
-            throw new ConfigParserException("The value cannot be parsed as a Long.", section, option, e);
-        }
+
+    public long getLong(String section, String option) throws XmlConfigParserException {
+        try { return Long.valueOf(this.getString(section, option)); } 
+        catch (NumberFormatException e) { throw new XmlConfigParserException("Unable to parse this value as a Long", section, option, e); }
     }
     
     
@@ -182,15 +160,11 @@ public class XmlConfigParser implements ConfigParser {
      * 
      * @return short
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    @Override
-    public short getShort(String section, String option) throws ParserException {
-        try {
-            return Short.valueOf(this.getString(section, option));
-        } catch (NumberFormatException e) {
-            throw new ConfigParserException("The value cannot be parsed as a short.", section, option, e);
-        }
+    public short getShort(String section, String option) throws XmlConfigParserException {
+        try { return Short.valueOf(this.getString(section, option)); } 
+        catch (NumberFormatException e) { throw new XmlConfigParserException("Unable to parse this value as a Short", section, option, e); }
     }
     
     
@@ -199,16 +173,15 @@ public class XmlConfigParser implements ConfigParser {
      * 
      * @return String
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    @Override
-    public String getString(String section, String option) throws ParserException {
+    public String getString(String section, String option) throws XmlConfigParserException {
         try {
             String res = xpath.evaluate(getSettingXPath(section, option), document);
-            if (res.isEmpty()) throw new ConfigParserException("Configuration section or option not found.", section, option);
+            if (res.isEmpty()) throw new XmlConfigParserException("Unable to match given section/option", section, option);
             return res;
         } catch (XPathExpressionException e) {
-            throw new ConfigParserException("An error occured while reading the option value.", section, option, e);
+            throw new XmlConfigParserException("Unable to read configuration value", section, option, e);
         }
     }
     
@@ -218,21 +191,20 @@ public class XmlConfigParser implements ConfigParser {
      * 
      * @return Map<String, String>
      * @author Mathias Van Malderen
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    @Override
-    public Map<String, String> getSettings(String section) throws ParserException {
+    public Map<String, String> getSection(String section) throws XmlConfigParserException {
         try {
             NodeList nodes = (NodeList) xpath.evaluate(getSectionXPath(section), document, XPathConstants.NODESET);
             Map<String, String> res = new HashMap<String, String>();
             for (int i = 0; i < nodes.getLength(); i++) {
-                String settingName  = nodes.item(i).getAttributes().getNamedItem("name").getNodeValue();
-                String settingValue = nodes.item(i).getChildNodes().item(0).getNodeValue();
-                res.put(settingName, settingValue);
+                String name  = nodes.item(i).getAttributes().getNamedItem("name").getNodeValue();
+                String value = nodes.item(i).getChildNodes().item(0).getNodeValue();
+                res.put(name, value);
             }
             return res;
         } catch (XPathExpressionException e) {
-            throw new ConfigParserException("An error occured while reading a whole section.", section, null, e);
+            throw new XmlConfigParserException("Unable to parse configuration section", section, null, e);
         }
     }
     

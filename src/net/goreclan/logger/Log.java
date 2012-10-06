@@ -1,221 +1,158 @@
 /**
- * This class provides an interface with the Java Logging API.
+ * Logger implementation which uses the org.apache.log4j.Logger class (Apache Foundation).
+ * This is class is intended to be used for debugging the application code in order to
+ * avoid bugs and to check the general application environment.
  * 
- * @author Mathias Van Malderen
- * @version 1.0
- * @copyright Mathias Van Malderen, 29 June, 2012
- * @package net.goreclan.logger
+ * Available log levels:
+ * 		
+ * 		- OFF 		[ The OFF has the highest possible rank and is intended to turn off logging. ]
+ *      - FATAL		[ The FATAL level designates very severe error events that will presumably lead the application to abort. ]
+ *      - ERROR		[ The ERROR level designates error events that might still allow the application to continue running.]
+ *      - WARN		[ The WARN level designates potentially harmful situations. ]
+ *      - INFO      [ The INFO level designates informational messages that highlight the progress of the application at coarse-grained level. ]
+ *      - DEBUG		[ The DEBUG level designates fine-grained informational events that are most useful to debug an application. ]
+ *      - TRACE		[ The TRACE Level designates finer-grained informational events than the DEBUG. ]
+ *      - ALL       [ The ALL has the lowest possible rank and is intended to turn on all logging. ]
+ * 
+ * @author      Daniele Pantaleone
+ * @version     1.0
+ * @copyright   Daniele Pantaleone, 05 October, 2012
+ * @package     net.goreclan.logger
  **/
 
 package net.goreclan.logger;
 
 import java.io.IOException;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.OutputStreamWriter;
+
+import net.goreclan.parser.XmlConfigParser;
+
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.PatternLayout;
 
 public class Log {
-    
-    private static Logger logger;
-    private static Level logLevel;
-    private static String logPath;
-    private static Formatter logFormatter;
-    private static Handler consoleHandler;
-    private static Handler fileHandler;
-    private static boolean developer;
-    private static boolean append;
-    
-    static { Log.setLogLevel(LogLevel.DEBUG); }
-    
-    
-    private Log() {}
-    
-    
-    /**
-     * Log a bot message.
-     * 
-     * @author Mathias Van Malderen
-     */
-    public static void bot(String message) {
-        log(LogLevel.BOT, message);
+	
+	private Logger logger;
+	private PatternLayout layout;
+	private FileAppender file;
+	private ConsoleAppender console;
+	
+	/**
+	 * Object constructor.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @throws IOException 
+	 * @return Log
+	 **/
+	public Log(XmlConfigParser config) throws IOException {
+		
+		this.logger = Logger.getLogger(Log.class);
+		this.layout = new PatternLayout("%-20d{yyyy-MM-dd hh:mm:ss} %-5p [%t]: %m%n");
+		
+		// Creating the FileAppender. This will be created anyway. It doesn't
+		// matter if the log level specified in the configuration file is "OFF".
+		this.file = new FileAppender();
+		this.file.setLayout(this.layout);
+		this.file.setFile(config.getString("log","path"));
+		this.file.setAppend(config.getBoolean("log","append"));
+		this.file.setName("File");
+		this.file.activateOptions();
+		this.logger.addAppender(this.file);
+		
+		if (config.getBoolean("log","console")) {
+			// The user specified to use also the JAVA System.out to print
+			// log messages. We are going to create and add one more handler
+			// for this purpose (logging performances will decrease though).
+			this.console = new ConsoleAppender();
+			this.console.setLayout(this.layout);
+			this.console.setWriter(new OutputStreamWriter(System.out));
+			this.console.activateOptions();
+			this.logger.addAppender(this.console);
+		}
+		
+
+		// Setting the desired log level (will fall back to Level.DEBUG if
+		// the user specified a wrong string in the configuration file).
+		this.logger.setLevel(Level.toLevel(config.getString("log","level")));
+	
+	}
+	
+	
+	/**
+	 * Print a TRACE message in the log handler.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @param  message The message to be printed
+	 */
+	public void trace(String message) {
+		this.logger.trace(message);
+	}
+	
+	
+	/**
+	 * Print a DEBUG message in the log handler.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @param  message The message to be printed
+	 */
+	public void debug(String message) {
+		this.logger.debug(message);
+	}
+	
+	
+	/**
+	 * Print a INFO message in the log handler.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @param  message The message to be printed
+	 */
+	public void info(String message) {
+		this.logger.info(message);
+	}
+	
+	
+	/**
+	 * Print a WARN message in the log handler.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @param  message The message to be printed
+	 */
+	public void warn(String message) {
+		this.logger.warn(message);
+	}
+	
+	
+	/**
+	 * Print a ERROR message in the log handler.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @param  message The message to be printed
+	 */
+	public void error(String message) {
+		this.logger.error(message);
+	}
+	
+	
+	/**
+	 * Print a FATAL message in the log handler.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @param  message The message to be printed
+	 */
+	public void fatal(String message) {
+		this.logger.fatal(message);
+	}
+	
+	
+    public static void main(String args[]) throws IOException {
+    	
+    	Log log = new Log();
+    	
+    	
     }
     
-    
-    /**
-     * Log an info message.
-     * 
-     * @author Mathias Van Malderen
-     */
-    public static void info(String message) {
-        log(LogLevel.INFO, message);
-    }
-    
-    
-    /**
-     * Log a verbose message.
-     * 
-     * @author Mathias Van Malderen
-     **/
-    public static void verbose(String message) {
-        log(LogLevel.VERBOSE, message);
-    }
-    
-    
-    /**
-     * Log a debug message.
-     * 
-     * @author Mathias Van Malderen
-     **/
-    public static void debug(String message) {
-        log(LogLevel.DEBUG, message);
-    }
-    
-    
-    /**
-     * Log an error message.
-     * 
-     * @author Mathias Van Malderen
-     **/
-    public static void error(String message) {
-        log(LogLevel.ERROR, message);
-    }
-    
-    
-    /**
-     * This method isolates all log handler instantiation and configuration.
-     * 
-     * @return Handler
-     * @throws SecurityException
-     * @throws IOException
-     * @author Mathias Van Malderen
-     **/
-    private static Handler createHandler(String type) throws SecurityException, IOException {
-        
-        Handler h;
-        
-        if ("file".equals(type)) h = new FileHandler(logPath, append);
-        else h = new ConsoleHandler();
-        
-        h.setLevel(Log.logLevel);
-        h.setFormatter(getLogFormatter());
-        
-        return h;
-    }
-    
-    
-    /**
-     * Write a message in the log.
-     * 
-     * @author Mathias Van Malderen
-     **/
-    private static void log(LogLevel level, String message) {
-        getLogger().log(level.toFrameworkLevel(), message);
-    }
-    
-    
-    /**
-     * @return Logger
-     * @author Mathias Van Malderen
-     **/
-    private static Logger getLogger() {
-        
-        if (logger == null) {
-            
-            try {
-                
-                logger = Logger.getLogger("net.goreclan.gorebot");
-                logger.setUseParentHandlers(false);
-                logger.setLevel(Log.logLevel);
-                
-                if (logPath != null) {
-                    fileHandler = createHandler("file");
-                    logger.addHandler(fileHandler);
-                }
-                
-                if (developer || logPath == null) {
-                    consoleHandler = createHandler("console");
-                    logger.addHandler(consoleHandler);
-                }
-                
-            } catch (IOException | SecurityException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            
-        }
-        
-        return logger;
-        
-    }
-    
-    /**
-     * @return Formatter
-     * @author Mathias Van Malderen
-     **/
-    private static Formatter getLogFormatter() {
-        
-        if (Log.logFormatter == null) Log.logFormatter = new LogFormatter();
-        return Log.logFormatter;
-    }
-    
-    
-    /**
-     * Set the current log level.
-     * 
-     * @author Mathias Van Malderen
-     **/
-    public static void setLogLevel(LogLevel logLevel) {
-        Log.logLevel = logLevel.toFrameworkLevel();
-    }
-    
-    
-    /**
-     * Set the current log path.
-     * 
-     * @author Mathias Van Malderen
-     **/
-    public static void setLogPath(String logPath) {
-        Log.logPath = logPath;
-    }
-    
-    
-    /**
-     * Set the log developer mode.
-     * If set, log messages are printed also in the standard output.
-     * 
-     * @author Mathias Van Malderen
-     **/
-    public static void setDeveloper(boolean developer) {
-        Log.developer = developer;
-    }
-    
-    
-    /**
-     * Set whether to create new log at each bot start.
-     * 
-     * @author Mathias Van Malderen
-     **/
-    public static void setAppend(boolean append) {
-        Log.append = append;
-    }
-    
-    
-    /**
-     * For testing purposes only
-     * 
-     * @return void
-     * @author Mathias Van Malderen
-     **/
-    public static void main(String[] args) {
-        Log.setDeveloper(true);
-        Log.bot("This is a bot message.");
-        Log.info("This is an info message.");
-        Log.verbose("This is a verbose message.");
-        Log.debug("This is a debugging message.");
-        Log.error("This is an error message.");
-    }
     
 }

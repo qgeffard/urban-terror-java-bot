@@ -20,6 +20,7 @@ public class IoUrt42LogParser {
     
     private Map<String, Pattern> lineformats;
 
+    
     /**
      * Object constructor
      * 
@@ -28,26 +29,30 @@ public class IoUrt42LogParser {
      **/
     public IoUrt42LogParser() {
         
-        lineformats = new HashMap<String,Pattern>();
-        lineformats.put("BombHolder", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Bombholder is\\s+([\\d]+)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientBegin", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientBegin:\\s([\\d]+)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientCallvote", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Callvote:\\s?([\\d]+)\\s?-\\s?\"([\\w]+)\\s?(.*)\"$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientConnect", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientConnect:\\s([\\d]+)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientDisconnect", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientDisconnect:\\s([\\d]+)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientHit", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Hit:\\s([\\d]+)\\s([\\d]+)\\s([\\d]+)\\s([\\d]+):\\s(.*)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientItem", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Item:\\s([\\d]+)\\s(.*)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientKill", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Kill:\\s([\\d]+)\\s([\\d]+)\\s([\\d]+):\\s(.*)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientRadio", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Radio:\\s?([\\d]+)\\s?-\\s?([\\d]+)\\s?-\\s?([\\d]+)\\s?-\\s?\"(.*)\"\\s?-\\s?\"(.*)\"$", Pattern.CASE_INSENSITIVE)); 
-        lineformats.put("ClientSay", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?say:\\s([\\d]+)\\s(.*):\\s?(.*)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientSayPrivate", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?saytell:\\s([\\d]+)\\s([\\d]+)\\s(.*):\\s?(.*)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientSayTeam", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?sayteam:\\s([\\d]+)\\s(.*):\\s?(.*)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientUserinfo", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientUserinfo:\\s([\\d]+)\\s(.*)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientUserinfoChanged", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientUserinfoChanged:\\s([\\d]+)\\s(.*)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("ClientVote", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Vote:\\s?([\\d]+)\\s?-\\s?([\\d]+)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("GameExit", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Exit:\\sTimelimit hit.$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("GameRoundStart", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?InitRound:\\s(.*)$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("GameWarmup", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Warmup:$", Pattern.CASE_INSENSITIVE));
-        lineformats.put("SurvivorWinner", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?SurvivorWinner:\\s([\\w]+)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats = new HashMap<String,Pattern>();
+        this.lineformats.put("AccountValidated", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?AccountValidated:\\s([\\d]+)\\s-\\s(.+)\\s-\\s([\\d]+)\\s-\\s\\\"([\\w]+)\\\"$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("AccountBan", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?AccountBan:\\s([\\d]+)\\s-\\s(.+)\\s-\\s([\\d]+)d\\s-\\s([\\d]+)h\\s-\\s([\\d]+)m$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("AccountKick", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?AccountKick:\\s([\\d]+)\\s-\\s\\\"(.*)\\\"$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("AccountRejected", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?AccountRejected:\\s([\\d]+)\\s-\\s(.*)\\s-\\s\\\"(.*)\\\"$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("BombHolder", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Bombholder is\\s+([\\d]+)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientBegin", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientBegin:\\s([\\d]+)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientCallvote", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Callvote:\\s?([\\d]+)\\s?-\\s?\"([\\w]+)\\s?(.*)\"$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientConnect", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientConnect:\\s([\\d]+)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientDisconnect", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientDisconnect:\\s([\\d]+)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientHit", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Hit:\\s([\\d]+)\\s([\\d]+)\\s([\\d]+)\\s([\\d]+):\\s(.*)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientItem", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Item:\\s([\\d]+)\\s(.*)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientKill", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Kill:\\s([\\d]+)\\s([\\d]+)\\s([\\d]+):\\s(.*)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientRadio", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Radio:\\s?([\\d]+)\\s?-\\s?([\\d]+)\\s?-\\s?([\\d]+)\\s?-\\s?\"(.*)\"\\s?-\\s?\"(.*)\"$", Pattern.CASE_INSENSITIVE)); 
+        this.lineformats.put("ClientSay", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?say:\\s([\\d]+)\\s(.*):\\s?(.*)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientSayPrivate", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?saytell:\\s([\\d]+)\\s([\\d]+)\\s(.*):\\s?(.*)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientSayTeam", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?sayteam:\\s([\\d]+)\\s(.*):\\s?(.*)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientUserinfo", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientUserinfo:\\s([\\d]+)\\s(.*)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientUserinfoChanged", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?ClientUserinfoChanged:\\s([\\d]+)\\s(.*)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("ClientVote", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Vote:\\s?([\\d]+)\\s?-\\s?([\\d]+)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("GameExit", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Exit:\\sTimelimit hit.$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("GameRoundStart", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?InitRound:\\s(.*)$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("GameWarmup", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?Warmup:$", Pattern.CASE_INSENSITIVE));
+        this.lineformats.put("SurvivorWinner", Pattern.compile("^\\s*[\\d]+:[\\d]+\\s?SurvivorWinner:\\s([\\w]+)$", Pattern.CASE_INSENSITIVE));
     
         Log.bot(String.format("ioUrbanTerror 4.2 log parser configuration completed [ LINE FORMATS : %d ].", lineformats.size()));
         		
