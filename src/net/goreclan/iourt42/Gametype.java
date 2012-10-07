@@ -1,8 +1,8 @@
 /**
- * This Enum handle the Urban Terror gametypes
+ * This Enum handle the Urban Terror Gametypes.
  * 
  * @author      Daniele Pantaleone
- * @version     1.1
+ * @version     1.2
  * @copyright   Daniele Pantaleone, 15 July, 2012
  * @package     net.goreclan.iourt42
  **/
@@ -15,19 +15,19 @@ import java.util.Map;
 
 public enum Gametype {
     
-    GT_FFA(0,"GT_FFA"),
-    GT_LMS(1,"GT_LMS"),
-    GT_TDM(3,"GT_TDM"),
-    GT_TS(4,"GT_TS"),
-    GT_FTL(5,"GT_FTL"),
-    GT_CAH(6,"GT_CAH"),
-    GT_CTF(7,"GT_CTF"),
-    GT_BOMB(8,"GT_BOMB");
+    GT_FFA	(0,	"FFA"),
+    GT_LMS	(1,	"LMS"),
+    GT_TDM	(3,	"TDM"),
+    GT_TS	(4,	"TS"),
+    GT_FTL	(5,	"FTL"),
+    GT_CAH	(6,	"CAH"),
+    GT_CTF	(7,	"CTF"),
+    GT_BOMB	(8, "BOMB");
     
     private static final Map<Integer, Gametype> gametypeByCode = new HashMap<Integer, Gametype>();
     private static final Map<String, Gametype> gametypeByName = new HashMap<String, Gametype>();
-    private Integer code = null;
-    private String  name = null;
+    private Integer code;
+    private String name;
     
     
     static {
@@ -39,88 +39,82 @@ public enum Gametype {
     
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return Gametype
      * @author Daniele Pantaleone 
+     * @param  code The Gametype code
+     * @param  name The Gametype short visual identifier
+     * @return Gametype
      **/
-    private Gametype(Integer code, String name) {
+    private Gametype(int code, String name) {
         this.code = code;
         this.name = name;
     }
     
     
     /**
-     * @return Integer
      * @author Daniele Pantaleone
-     */
+     * @return Integer
+     **/
     public Integer getCode() {
         return code;
     }
     
     
     /**
-     * @return Integer
      * @author Daniele Pantaleone
-     */
+     * @return String
+     **/
     public String getName() {
         return name;
     }
     
     
     /**
-     * Return a Gametype object by matching the Gametype code
+     * Return a Gametype object by matching the Gametype code.
      * 
-     * @return Gametype
      * @author Daniele Pantaleone
+     * @param  code The Gametype code
      * @throws IndexOutOfBoundException 
-     */
+     * @return Gametype
+     **/
     public static Gametype getByCode(Integer code) throws IndexOutOfBoundsException {
         
     	if (!gametypeByCode.containsKey(code)) 
-        	throw new IndexOutOfBoundsException(String.format("Invalid gametype code: %d.", code));
+        	throw new IndexOutOfBoundsException("Invalid gametype code: " + code + ".");
         
     	return gametypeByCode.get(code);
     }
     
     
     /**
-     * Return a Gametype object by matching the Gametype name
+     * Return a Gametype object by matching the Gametype name.
      * 
-     * @return Gametype
      * @author Daniele Pantaleone
+     * @param  name The Gametype short visual identifier
      * @throws IndexOutOfBoundException 
-     */
+     * @return Gametype
+     **/
     public static Gametype getByName(String name) throws IndexOutOfBoundsException {
         
-    	switch(name.toUpperCase()) {
-    		case "FFA":	  name = "GT_FFA";  break;
-    		case "LMS":	  name = "GT_LMS";  break;
-    		case "TDM":	  name = "GT_TDM";  break;
-    		case "TS":	  name = "GT_TS";   break;
-    		case "FTL":	  name = "GT_FTL";  break;
-    		case "CAH":   name = "GT_CAH";  break;
-    		case "CTF":	  name = "GT_CTF";  break;
-    		case "BOMB":  name = "GT_BOMB"; break;
-    	}
-    	
-    	if (!gametypeByName.containsKey(name.toUpperCase())) 
-        	throw new IndexOutOfBoundsException(String.format("Invalid gametype name: %s.", name.toUpperCase()));
+    	name = name.toUpperCase();
+    	if (!gametypeByName.containsKey(name)) 
+        	throw new IndexOutOfBoundsException("Invalid gametype name: " + name + ".");
         
     	return gametypeByName.get(name.toUpperCase());
     }
     
     
     /**
-     * String object representation
+     * String object representation.
      * 
-     * @return String
      * @author Daniele Pantaleone
+     * @return String
      **/
     public String toString() {
         
     	// Returning a String object representation
-        return String.format("[ code : %d | name : %s ]", code, name);
+        return "[ code : " + code + " | name : " + name + " ]";
         
     }
     
