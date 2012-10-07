@@ -104,7 +104,7 @@ public enum Mod {
     public static Mod getByKillMode(Integer killmode) throws IndexOutOfBoundsException {
         
     	if (!modByKillMode.containsKey(killmode)) 
-        	throw new IndexOutOfBoundsException("Invalid kill mode index: " + killmode + ".");
+        	throw new IndexOutOfBoundsException("Unable to match kill mode code: " + killmode + ".");
         
     	return modByKillMode.get(killmode);
     }
@@ -120,7 +120,7 @@ public enum Mod {
     public static Mod getByHitMode(Integer hitmode) throws IndexOutOfBoundsException {
         
     	if (!modByHitMode.containsKey(hitmode)) 
-        	throw new IndexOutOfBoundsException("Invalid hit mode index: " + hitmode + ".");
+        	throw new IndexOutOfBoundsException("Unable to match hit mode code: " + hitmode + ".");
      
         return modByHitMode.get(hitmode);
     }
