@@ -51,7 +51,7 @@ public class Rcon {
             this.socket = new DatagramSocket();
             this.socket.setSoTimeout(this.timeout);
              
-            this.log.debug("RCON interface configured [ IP : " + this.ip.getHostAddress() + " | PORT : " + this.port + " | PASSWORD : " + this.password + " ]");
+            this.log.debug("RCON interface configured [ ip : " + this.ip.getHostAddress() + " | port : " + this.port + " | password : " + this.password + " ]");
             
         } catch (UnknownHostException | SocketException e) {
             this.log.fatal(e.toString());
