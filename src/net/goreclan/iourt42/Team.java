@@ -112,8 +112,8 @@ public enum Team {
     /**
      * String object representation.
      * 
-     * @return String
      * @author Daniele Pantaleone
+     * @return String
      **/
     public String toString() {
         
