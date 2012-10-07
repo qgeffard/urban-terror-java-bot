@@ -50,7 +50,7 @@ public class Log {
 	public Log(XmlConfigParser config) throws IOException {
 		
 		this.logger = Logger.getLogger(Log.class);
-		this.layout = new PatternLayout("%-20d{yyyy-MM-dd hh:mm:ss} %-5p [%t]: %m%n");
+		this.layout = new PatternLayout("%-20d{yyyy-MM-dd hh:mm:ss} %-6p [%t]: %m%n");
 		
 		// Creating the FileAppender. This will be created anyway. It doesn't
 		// matter if the log level specified in the configuration file is "OFF".
@@ -69,6 +69,7 @@ public class Log {
 			this.console = new ConsoleAppender();
 			this.console.setLayout(this.layout);
 			this.console.setWriter(new OutputStreamWriter(System.out));
+			this.console.setName("Console");
 			this.console.activateOptions();
 			this.logger.addAppender(this.console);
 		}
@@ -145,14 +146,5 @@ public class Log {
 	public void fatal(String message) {
 		this.logger.fatal(message);
 	}
-	
-	
-    public static void main(String args[]) throws IOException {
-    	
-    	Log log = new Log();
-    	
-    	
-    }
-    
     
 }
