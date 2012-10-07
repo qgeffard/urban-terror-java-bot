@@ -25,8 +25,6 @@ package net.goreclan.logger;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import net.goreclan.parser.XmlConfigParser;
-
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -47,7 +45,7 @@ public class Log {
 	 * @throws IOException 
 	 * @return Log
 	 **/
-	public Log(XmlConfigParser config) throws IOException {
+	public Log(String path, String level, boolean append, boolean console) throws IOException {
 		
 		this.logger = Logger.getLogger(Log.class);
 		this.layout = new PatternLayout("%-20d{yyyy-MM-dd hh:mm:ss} %-6p [%t]: %m%n");
@@ -56,13 +54,13 @@ public class Log {
 		// matter if the log level specified in the configuration file is "OFF".
 		this.file = new FileAppender();
 		this.file.setLayout(this.layout);
-		this.file.setFile(config.getString("log","path"));
-		this.file.setAppend(config.getBoolean("log","append"));
+		this.file.setFile(path);
+		this.file.setAppend(append);
 		this.file.setName("File");
 		this.file.activateOptions();
 		this.logger.addAppender(this.file);
 		
-		if (config.getBoolean("log","console")) {
+		if (console) {
 			// The user specified to use also the JAVA System.out to print
 			// log messages. We are going to create and add one more handler
 			// for this purpose (logging performances will decrease though).
@@ -77,7 +75,7 @@ public class Log {
 
 		// Setting the desired log level (will fall back to Level.DEBUG if
 		// the user specified a wrong string in the configuration file).
-		this.logger.setLevel(Level.toLevel(config.getString("log","level")));
+		this.logger.setLevel(Level.toLevel(level));
 	
 	}
 	
