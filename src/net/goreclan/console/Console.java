@@ -1,8 +1,8 @@
 /**
- * ioUrbanTerror 4.2 RCON Console implementation
+ * Urban Terror 4.2 RCON Console.
  * 
  * @author      Daniele Pantaleone
- * @version     1.2
+ * @version     1.2.1
  * @copyright   Daniele Pantaleone, 04 October, 2012
  * @package     net.goreclan.console
  **/
@@ -18,9 +18,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.goreclan.domain.Client;
-import net.goreclan.exception.ParserException;
+import net.goreclan.exception.XmlConfigParserException;
 import net.goreclan.iourt42.Gametype;
 import net.goreclan.iourt42.Team;
+import net.goreclan.logger.Log;
 import net.goreclan.parser.BooleanParser;
 
 public class Console {
@@ -30,16 +31,18 @@ public class Console {
     /**
      * Object constructor.
      * 
+     * @author Daniele Pantaleone 
      * @param  address The remote server address
      * @param  port The virtual port on which the server is accepting connections
      * @param  password The server Rcon password
-     * @author Daniele Pantaleone 
+     * @param  log A reference to the main bot logger object
      * @return Console
      **/
-    public Console(String address, int port, String password) {
-    	// Configuring the RCON utility object.
-    	// Console can't deal with the game without it.
-        this.rcon = new Rcon(address, port, password);
+    public Console(String address, int port, String password, Log log) {
+    	// Configuring the RCON utility object. Console can't deal with the game without it.
+    	// Exceptions are handled directly inside the RCON class, because if it fails to
+    	// start, a fatal exception will be thrown and the system exit instantly.
+        this.rcon = new Rcon(address, port, password, log);
     }
     
     
@@ -441,9 +444,9 @@ public class Console {
      * @return boolean
      * @author Daniele Pantaleone
      * @throws IOException 
-     * @throws ParserException
+     * @throws XmlConfigParserException
      **/
-    public boolean getMatchmode() throws IOException, ParserException {
+    public boolean getMatchmode() throws IOException, XmlConfigParserException {
         return BooleanParser.valueOf(this.getCvar("g_matchmode"));       
     }
     
