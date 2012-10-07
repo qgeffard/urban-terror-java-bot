@@ -81,7 +81,7 @@ public enum Gametype {
     public static Gametype getByCode(Integer code) throws IndexOutOfBoundsException {
         
     	if (!gametypeByCode.containsKey(code)) 
-        	throw new IndexOutOfBoundsException("Invalid gametype code: " + code + ".");
+        	throw new IndexOutOfBoundsException("Unable to match gametype code: " + code + ".");
         
     	return gametypeByCode.get(code);
     }
@@ -99,7 +99,7 @@ public enum Gametype {
         
     	name = name.toUpperCase();
     	if (!gametypeByName.containsKey(name)) 
-        	throw new IndexOutOfBoundsException("Invalid gametype name: " + name + ".");
+        	throw new IndexOutOfBoundsException("Unable to match gametype name: " + name + ".");
         
     	return gametypeByName.get(name.toUpperCase());
     }
@@ -114,7 +114,7 @@ public enum Gametype {
     public String toString() {
         
     	// Returning a String object representation
-        return "[ code : " + code + " | name : " + name + " ]";
+        return "[ code : " + this.code + " | name : " + this.name + " ]";
         
     }
     
