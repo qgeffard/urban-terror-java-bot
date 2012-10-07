@@ -1,8 +1,8 @@
 /**
- * Event object for Client Vote
+ * Event object for Client Vote.
  * 
  * @author      Daniele Pantaleone
- * @version     1.0
+ * @version     1.1
  * @copyright   Daniele Pantaleone, 8 September, 2012
  * @package     net.goreclan.event
  **/
@@ -13,14 +13,16 @@ import net.goreclan.domain.Client;
 
 public class EventClientVote extends Event {
 
-    private Client client = null;
-    private String data = null;
+    private final Client client;
+    private final String data;
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  client The client who voted
+     * @param  data The vote string (1-2)
+     * @return EventClientVote
      **/
     public EventClientVote(Client client, String data) {  
         super(EventType.EVT_CLIENT_VOTE);
@@ -30,18 +32,18 @@ public class EventClientVote extends Event {
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getClient() {
         return this.client;
     }
    
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
+     * @return String
+     **/
     public String getData() {
         return this.data;
     }

@@ -1,8 +1,8 @@
 /**
- * Event object for Client Say
+ * Event object for Client Say.
  * 
  * @author      Daniele Pantaleone
- * @version     1.0
+ * @version     1.1
  * @copyright   Daniele Pantaleone, 02 July, 2012
  * @package     net.goreclan.event
  **/
@@ -13,37 +13,39 @@ import net.goreclan.domain.Client;
 
 public class EventClientSay extends Event {
 
-    private Client client = null;
-    private String sentence = null;
+    private final Client client;
+    private final String message;
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  client The client who said something
+     * @param  message The sentence said
+     * @return EventClientSay
      **/
-    public EventClientSay(Client client, Client target, String sentence) {
+    public EventClientSay(Client client, Client target, String message) {
         super(EventType.EVT_CLIENT_SAY);
         this.client = client;
-        this.sentence = sentence;
+        this.message = message;
     }
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getClient() {
         return this.client;
     }
     
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
-    public String getSentence() {
-        return this.sentence;
+     * @return String
+     **/
+    public String getMessage() {
+        return this.message;
     }
     
 }

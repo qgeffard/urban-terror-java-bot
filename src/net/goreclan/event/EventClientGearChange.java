@@ -1,5 +1,5 @@
 /**
- * Event object for Client Gear Change
+ * Event object for Client Gear Change.
  * 
  * @author      Daniele Pantaleone
  * @version     1.0
@@ -13,16 +13,19 @@ import net.goreclan.domain.Client;
 
 public class EventClientGearChange extends Event {
 
-    private Client client = null;
-    private String before = null;
-    private String after = null;
+    private final Client client;
+    private final String before;
+    private final String after;
     
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
-     * @author Daniele Pantaleone 
+     * @author Daniele Pantaleone
+     * @param  client The client who changed the gear
+     * @param  before The old gear string
+     * @param  after  The new gear string
+     * @return EventClientGearChange
      **/
     public EventClientGearChange(Client client, String before, String after) {
         super(EventType.EVT_CLIENT_GEAR_CHANGE);
@@ -33,27 +36,27 @@ public class EventClientGearChange extends Event {
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getClient() {
         return this.client;
     }
     
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
+     * @return String
+     **/
     public String getBefore() {
         return this.before;
     }
     
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
+     * @return String
+     **/
     public String getAfter() {
         return this.after;
     }

@@ -1,8 +1,8 @@
 /**
- * Event object for Client Callvote
+ * Event object for Client Callvote.
  * 
  * @author      Daniele Pantaleone
- * @version     1.0
+ * @version     1.1
  * @copyright   Daniele Pantaleone, 8 September, 2012
  * @package     net.goreclan.event
  **/
@@ -13,46 +13,49 @@ import net.goreclan.domain.Client;
 
 public class EventClientCallvote extends Event {
 
-    private Client client = null;
-    private String type = null;
-    private String data = null;
+    private final Client client;
+    private final String callvoteType;
+    private final String data;
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
-     * @author Daniele Pantaleone 
+     * @author Daniele Pantaleone
+     * @param  client The client who issued the votation
+     * @param  callvoteType The type of the callvote
+     * @param  data A string containing votation extra data
+     * @return EventClientCallvote 
      **/
-    public EventClientCallvote(Client client, String type, String data) {  
+    public EventClientCallvote(Client client, String callvoteType, String data) {  
         super(EventType.EVT_CLIENT_CALLVOTE);
         this.client = client;
-        this.type = type;
+        this.callvoteType = callvoteType;
         this.data = data;
     }
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getClient() {
         return this.client;
     }
     
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
-    public String getType() {
-        return this.type;
+     * @return String
+     **/
+    public String getCallvoteType() {
+        return this.callvoteType;
     }
    
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
+     * @return String
+     **/
     public String getData() {
         return this.data;
     }

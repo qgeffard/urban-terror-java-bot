@@ -1,8 +1,8 @@
 /**
- * Event object for Client Radio
+ * Event object for Client Radio.
  * 
  * @author      Daniele Pantaleone
- * @version     1.0
+ * @version     1.1
  * @copyright   Daniele Pantaleone, 8 September, 2012
  * @package     net.goreclan.event
  **/
@@ -13,19 +13,24 @@ import net.goreclan.domain.Client;
 
 public class EventClientRadio extends Event {
 
-    private Client client = null;
-    private Integer msg_group = null;
-    private Integer msg_id = null;
-    private String location = null;
-    private String message = null;
+    private final Client client;
+    private final int msg_group;
+    private final int msg_id;
+    private final String location;
+    private final String message;
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  client The client who issued the radio command
+     * @param  msg_group The message group
+     * @param  msg_id The message id
+     * @param  location The string location where the radio command has been issued
+     * @param  message The message attached to the radio command
+     * @return EventClientRadio
      **/
-    public EventClientRadio(Client client, Integer msg_group, Integer msg_id, String location, String message) {  
+    public EventClientRadio(Client client, int msg_group, int msg_id, String location, String message) {  
         super(EventType.EVT_CLIENT_RADIO);
         this.client = client;
         this.msg_group = msg_group;
@@ -36,45 +41,45 @@ public class EventClientRadio extends Event {
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getClient() {
         return this.client;
     }
     
     
     /**
-     * @return Integer
      * @author Daniele Pantaleone
-     */
-    public Integer getMsgGroup() {
+     * @return int
+     **/
+    public int getMsgGroup() {
         return this.msg_group;
     }
     
     
     /**
-     * @return Integer
      * @author Daniele Pantaleone
-     */
+     * @return int
+     **/
     public Integer getMsgId() {
         return this.msg_id;
     }
    
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
+     * @return String
+     **/
     public String getLocation() {
         return this.location;
     }
     
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
+     * @return String
+     **/
     public String getMessage() {
         return this.message;
     }

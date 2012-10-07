@@ -1,8 +1,8 @@
 /**
- * Event object for Survivor Winner
+ * Event object for Survivor Winner.
  * 
  * @author      Daniele Pantaleone
- * @version     1.1
+ * @version     1.2
  * @copyright   Daniele Pantaleone, 15 July, 2012
  * @package     net.goreclan.event
  **/
@@ -13,13 +13,14 @@ import net.goreclan.iourt42.Team;
 
 public class EventSurvivorWinner extends Event {
 
-    private Team team = null;
+    private final Team team;
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
-     * @author Daniele Pantaleone 
+     * @author Daniele Pantaleone
+     * @param  team The team who won the round
+     * @return EventSurvivorWinner
      **/
     public EventSurvivorWinner(Team team) {
         super(EventType.EVT_SURVIVOR_WINNER);
@@ -28,9 +29,9 @@ public class EventSurvivorWinner extends Event {
     
     
     /**
-     * @return Team
      * @author Daniele Pantaleone
-     */
+     * @return Team
+     **/
     public Team getTeam() {
         return this.team;
     }

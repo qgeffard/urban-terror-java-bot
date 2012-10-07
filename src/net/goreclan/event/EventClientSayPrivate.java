@@ -1,8 +1,8 @@
 /**
- * Event object for Client SayTell
+ * Event object for Client SayTell.
  * 
  * @author      Daniele Pantaleone
- * @version     1.0
+ * @version     1.1
  * @copyright   Daniele Pantaleone, 15 July, 2012
  * @package     net.goreclan.event
  **/
@@ -13,48 +13,51 @@ import net.goreclan.domain.Client;
 
 public class EventClientSayPrivate extends Event {
 
-    private Client client = null;
-    private Client target = null;
-    private String sentence = null;
+    private final Client client;
+    private final Client target;
+    private final String message;
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  client The client who said something
+     * @param  target The client on which the /tell command has been performed
+     * @param  message The sentence said
+     * @return EventClientSayPrivate
      **/
-    public EventClientSayPrivate(Client client, Client target, String sentence) {
+    public EventClientSayPrivate(Client client, Client target, String message) {
         super(EventType.EVT_CLIENT_SAY_PRIVATE);
         this.client = client;
         this.target = target;
-        this.sentence = sentence;
+        this.message = message;
     }
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getClient() {
         return this.client;
     }
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getTarget() {
         return this.target;
     }
     
     
     /**
-     * @return String
      * @author Daniele Pantaleone
+     * @return String
      */
-    public String getSentence() {
-        return this.sentence;
+    public String getMessage() {
+        return this.message;
     }
     
 }

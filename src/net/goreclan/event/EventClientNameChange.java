@@ -1,8 +1,8 @@
 /**
- * Event object for Client Connect
+ * Event object for Client Name Change.
  * 
  * @author      Daniele Pantaleone
- * @version     1.0
+ * @version     1.1
  * @copyright   Daniele Pantaleone, 06 July, 2012
  * @package     net.goreclan.event
  **/
@@ -13,16 +13,19 @@ import net.goreclan.domain.Client;
 
 public class EventClientNameChange extends Event {
 
-    private Client client = null;
-    private String before = null;
-    private String after = null;
+    private final Client client;
+    private final String before;
+    private final String after;
     
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  client The client who changed nickname
+     * @param  before The old nickname
+     * @param  after The new nickname
+     * @return EventClientNameChange
      **/
     public EventClientNameChange(Client client, String before, String after) {
         super(EventType.EVT_CLIENT_NAME_CHANGE);
@@ -33,27 +36,27 @@ public class EventClientNameChange extends Event {
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getClient() {
         return this.client;
     }
     
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
+     * @return String
+     **/
     public String getBefore() {
         return this.before;
     }
     
     
     /**
-     * @return String
      * @author Daniele Pantaleone
-     */
+     * @return String
+     **/
     public String getAfter() {
         return this.after;
     }

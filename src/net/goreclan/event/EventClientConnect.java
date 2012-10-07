@@ -1,5 +1,5 @@
 /**
- * Event object for Client Connect
+ * Event object for Client Connect.
  * 
  * @author      Daniele Pantaleone
  * @version     1.0
@@ -13,13 +13,14 @@ import net.goreclan.domain.Client;
 
 public class EventClientConnect extends Event {
 
-    private Client client = null;
+    private final Client client;
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
-     * @author Daniele Pantaleone 
+     * @author Daniele Pantaleone
+     * @param  client The connecting client object
+     * @return EventClientConnect
      **/
     public EventClientConnect(Client client) {  
         super(EventType.EVT_CLIENT_CONNECT);
@@ -28,9 +29,9 @@ public class EventClientConnect extends Event {
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getClient() {
         return this.client;
     }

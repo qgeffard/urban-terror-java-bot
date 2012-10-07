@@ -1,9 +1,9 @@
 /**
- * Event template class. All the Event classes must extend this one.
+ * Event template class. All the Event classes MUST extend this one.
  * 
- * @author      Daniele Pantaleone
- * @version     1.0
- * @copyright   Daniele Pantaleone, 02 July, 2012
+ * @author      Daniele Pantaleone, Mathias Van Malderen
+ * @version     1.1
+ * @copyright   Daniele Pantaleone, Mathias Van Malderen, 02 July, 2012
  * @package     net.goreclan.event
  **/
 
@@ -13,32 +13,32 @@ import java.util.Date;
 
 public abstract class Event {
     
-    private EventType name = null;
-    private Date time = null;
+    private final EventType type;
+    private final Date time;
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  type The event type
      **/
-    public Event(EventType name) {
-        this.name = name;
+    public Event(EventType type) {
+        this.type = type;
         this.time = new Date();
     }
     
     
     /**
-     * @return String
-     * @author Daniele Pantaleone
+     * @author Mathias Van Malderen
+     * @return EventType
      **/
-    public EventType getName() {
-        return this.name;
+    public EventType getType() {
+        return this.type;
     }
     
     /**
-     * @return Date
      * @author Daniele Pantaleone
+     * @return Date
      **/
     public Date getTime() {
         return this.time;

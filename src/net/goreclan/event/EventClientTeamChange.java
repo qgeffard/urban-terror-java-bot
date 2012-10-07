@@ -1,8 +1,8 @@
 /**
- * Event object for Client Team Change
+ * Event object for Client Team Change.
  * 
  * @author      Daniele Pantaleone
- * @version     1.1
+ * @version     1.2
  * @copyright   Daniele Pantaleone, 15 July, 2012
  * @package     net.goreclan.event
  **/
@@ -14,16 +14,19 @@ import net.goreclan.iourt42.Team;
 
 public class EventClientTeamChange extends Event {
 
-    private Client client = null;
-    private Team before = null;
-    private Team after = null;
+    private final Client client;
+    private final Team before;
+    private final Team after;
     
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
-     * @return void
      * @author Daniele Pantaleone 
+     * @param  client The client who changed team
+     * @param  before The old team
+     * @param  after The new team
+     * @return EventClientTeamChange
      **/
     public EventClientTeamChange(Client client, Team before, Team after) {
         super(EventType.EVT_CLIENT_TEAM_CHANGE);
@@ -34,27 +37,27 @@ public class EventClientTeamChange extends Event {
     
     
     /**
-     * @return Client
      * @author Daniele Pantaleone
-     */
+     * @return Client
+     **/
     public Client getClient() {
         return this.client;
     }
     
     
     /**
-     * @return Team
      * @author Daniele Pantaleone
-     */
+     * @return Team
+     **/
     public Team getBefore() {
         return this.before;
     }
     
     
     /**
-     * @return Team
      * @author Daniele Pantaleone
-     */
+     * @return Team
+     **/
     public Team getAfter() {
         return this.after;
     }
