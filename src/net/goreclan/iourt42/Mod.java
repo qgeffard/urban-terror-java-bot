@@ -98,6 +98,7 @@ public enum Mod {
      * Return a Mod object by matching the Kill Mode.
      * 
      * @author Daniele Pantaleone
+     * @param  killmode The kill mode code
      * @throws IndexOutOfBoundException 
      * @return Mod
      **/
@@ -114,6 +115,7 @@ public enum Mod {
      * Return a Mod object by matching the Hit Mode.
      * 
      * @author Daniele Pantaleone
+     * @param  hitmode The hit mode code
      * @throws IndexOutOfBoundException 
      * @return Mod
      */
