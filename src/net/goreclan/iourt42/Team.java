@@ -96,10 +96,10 @@ public enum Team {
     	name = name.toUpperCase();
     	
     	switch(name) {
-    		case	"R":	  name = "TEAM_RED";  break;
-    		case	"B":	  name = "TEAM_BLUE"; break;
-    		case	"S":	  name = "TEAM_SPEC"; break;
-    		case	"SPEC":	  name = "TEAM_SPEC"; break;
+    		case	"R":	  name = "RED";  	   break;
+    		case	"B":	  name = "BLUE";	   break;
+    		case	"S":	  name = "SPECTATOR";  break;
+    		case	"SPEC":	  name = "SPECTATOR";  break;
     	}	
     	
         if (!teamByName.containsKey(name)) 
