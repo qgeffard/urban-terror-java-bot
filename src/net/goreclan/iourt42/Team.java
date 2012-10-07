@@ -2,7 +2,7 @@
  * This Enum handle the Urban Terror teams.
  * 
  * @author      Daniele Pantaleone
- * @version     1.2
+ * @version     1.2.1
  * @copyright   Daniele Pantaleone, 04 October, 2012
  * @package     net.goreclan.iourt42
  **/
@@ -15,10 +15,10 @@ import java.util.Map;
 
 public enum Team {
     
-    TEAM_RED(1,"TEAM_RED"),
-    TEAM_BLUE(2,"TEAM_BLUE"),
-    TEAM_SPEC(3,"TEAM_SPEC"),
-    TEAM_FREE(-1,"TEAM_FREE");
+    TEAM_RED  (1,  "RED"),
+    TEAM_BLUE (2,  "BLUE"),
+    TEAM_SPEC (3,  "SPECTATOR"),
+    TEAM_FREE (-1, "FREE");
     
     private static final Map<Integer, Team> teamByCode = new HashMap<Integer, Team>();
     private static final Map<String, Team> teamByName = new HashMap<String, Team>();
@@ -49,18 +49,18 @@ public enum Team {
     
     
     /**
-     * @return int
      * @author Daniele Pantaleone
-     */
-    public int getCode() {
+     * @return Integer
+     **/
+    public Integer getCode() {
         return code;
     }
     
     
     /**
-     * @return Integer
      * @author Daniele Pantaleone
-     */
+     * @return Integer
+     **/
     public String getName() {
         return name;
     }
@@ -93,21 +93,19 @@ public enum Team {
      */
     public static Team getByName(String name) throws IndexOutOfBoundsException {
     	
-    	switch(name.toUpperCase()) {
-    		case	"RED":  	  name = "TEAM_RED";  break;
-    		case	"R":		  name = "TEAM_RED";  break;
-    		case	"BLUE": 	  name = "TEAM_BLUE"; break;
-    		case	"B":		  name = "TEAM_BLUE"; break;
-    		case	"SPECTATOR":  name = "TEAM_SPEC"; break;
-    		case	"SPEC":		  name = "TEAM_SPEC"; break;
-    		case	"S":		  name = "TEAM_SPEC"; break;
-    		case	"FREE":		  name = "TEAM_FREE"; break;
+    	name = name.toUpperCase();
+    	
+    	switch(name) {
+    		case	"R":	  name = "TEAM_RED";  break;
+    		case	"B":	  name = "TEAM_BLUE"; break;
+    		case	"S":	  name = "TEAM_SPEC"; break;
+    		case	"SPEC":	  name = "TEAM_SPEC"; break;
     	}	
     	
-        if (!teamByName.containsKey(name.toUpperCase())) 
-        	throw new IndexOutOfBoundsException("Unable to match team name: " + name.toUpperCase() + ".");
+        if (!teamByName.containsKey(name)) 
+        	throw new IndexOutOfBoundsException("Unable to match team name: " + name + ".");
         
-        return teamByName.get(name.toUpperCase());
+        return teamByName.get(name);
     }
     
     
