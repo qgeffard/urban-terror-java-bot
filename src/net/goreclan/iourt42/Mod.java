@@ -2,7 +2,7 @@
  * This Enum handle the Urban Terror MOD (Method of deaths)
  * 
  * @author      Daniele Pantaleone, Mathias Van Malderen
- * @version     1.1
+ * @version     1.1.1
  * @copyright   Daniele Pantaleone, 06 July, 2012
  * @package     net.goreclan.iourt42
  **/
@@ -65,10 +65,10 @@ public enum Mod {
     
     
     /**
-     * Object constructor
+     * Object constructor.
      * 
+     * @author Daniele Pantaleone
      * @return Mod
-     * @author Daniele Pantaleone 
      **/
     private Mod(Integer killmode, Integer hitmode) {
         this.killmode = killmode;
@@ -77,50 +77,50 @@ public enum Mod {
     
     
     /**
-     * @return Integer
      * @author Daniele Pantaleone
-     */
+     * @return Integer
+     **/
     public Integer getKillMode() {
         return killmode;
     }
     
     
     /**
-     * @return Integer
      * @author Daniele Pantaleone
-     */
+     * @return Integer
+     **/
     public Integer getHitMode() {
         return hitmode;
     }
     
     
     /**
-     * Return a Mod object by matching the Kill Mode
+     * Return a Mod object by matching the Kill Mode.
      * 
-     * @return Mod
      * @author Daniele Pantaleone
      * @throws IndexOutOfBoundException 
-     */
+     * @return Mod
+     **/
     public static Mod getByKillMode(Integer killmode) throws IndexOutOfBoundsException {
         
     	if (!modByKillMode.containsKey(killmode)) 
-        	throw new IndexOutOfBoundsException(String.format("Invalid kill mode index: %d.", killmode));
+        	throw new IndexOutOfBoundsException("Invalid kill mode index: " + killmode + ".");
         
     	return modByKillMode.get(killmode);
     }
     
     
     /**
-     * Return a Mod object by matching the Hit Mode
+     * Return a Mod object by matching the Hit Mode.
      * 
-     * @return Mod
      * @author Daniele Pantaleone
      * @throws IndexOutOfBoundException 
+     * @return Mod
      */
     public static Mod getByHitMode(Integer hitmode) throws IndexOutOfBoundsException {
         
     	if (!modByHitMode.containsKey(hitmode)) 
-        	throw new IndexOutOfBoundsException(String.format("Invalid hit mode index: %d.", hitmode));
+        	throw new IndexOutOfBoundsException("Invalid hit mode index: " + hitmode + ".");
      
         return modByHitMode.get(hitmode);
     }
