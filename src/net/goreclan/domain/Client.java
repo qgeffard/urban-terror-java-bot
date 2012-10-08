@@ -91,7 +91,7 @@ public class Client {
     public String toString() {
         
     	// Returning a string object representation.
-    	return "[ id : " + id + " | name : " + name + " | level : " + group.level + " | ip : " + ip + " | guid : " + guid + " | auth : " + auth + " | connections: " + connections + " ]";
+    	return "[ id : " + this.id + " | name : " + this.name + " | level : " + this.group.level + " | ip : " + this.ip + " | guid : " + this.guid + " | auth : " + this.auth + " | connections: " + this.connections + " | time_add: " + this.time_add.getTime() + " | time_edit: " + this.time_edit.getTime() + " ]";
  
     }
     
