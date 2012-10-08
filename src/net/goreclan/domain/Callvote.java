@@ -24,6 +24,7 @@ public class Callvote {
     public int yes;
     public int no;
     public Date time_add;
+    public Date time_edit;
   
     
     /**
@@ -84,7 +85,7 @@ public class Callvote {
     public String toString() {
         
     	// Returning a string object representation.
-    	return "[ id : " + this.id + " | client_id : " + this.client_id + " | type : " + this.type + " | data : " + this.data + " | yes : " + this.yes + " | no : " + this.no + " | time_add : " + this.time_add.getTime() + " ]";
+    	return "[ id : " + this.id + " | client_id : " + this.client_id + " | type : " + this.type + " | data : " + this.data + " | yes : " + this.yes + " | no : " + this.no + " | time_add : " + this.time_add.getTime() + " | time_add : " + this.time_add.getTime() + " ]";
  
     }
     
