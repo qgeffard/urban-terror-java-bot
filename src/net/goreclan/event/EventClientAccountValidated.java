@@ -29,7 +29,7 @@ public class EventClientAccountValidated extends Event {
      * @return EventClientAccountValidated
      **/
     public EventClientAccountValidated(Client client, String login, int rcon_level, String notoriety) {  
-        super(EventType.EVT_CLIENT_CONNECT);
+        super(EventType.EVT_CLIENT_ACCOUNT_VALIDATED);
         this.client = client;
         this.login = login;
         this.rcon_level = rcon_level;
