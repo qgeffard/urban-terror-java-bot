@@ -18,8 +18,8 @@ import net.goreclan.logger.Log;
 
 public class IoUrT42LogParser {
     
-	private Log log;
-    private Map<String, Pattern> lineformats;
+	private final Log log;
+    private final Map<String, Pattern> lineformats;
 
     
     /**
