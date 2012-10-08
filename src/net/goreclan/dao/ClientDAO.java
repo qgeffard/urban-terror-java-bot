@@ -86,7 +86,6 @@ public class ClientDAO {
         client.auth = resultset.getString("cl_auth");
         client.time_add = new Date(resultset.getLong("cl_time_add"));
         client.time_edit = new Date(resultset.getLong("cl_time_edit"));
-        if (resultset.wasNull()) client.time_edit = null;
             
         resultset.close();
         statement.close();
