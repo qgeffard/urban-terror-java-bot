@@ -20,7 +20,7 @@ import net.goreclan.logger.Log;
 
 public class Rcon {
     
-	private Log log;
+	private final Log log;
 	
     private InetAddress ip;
     private int port;
@@ -42,9 +42,11 @@ public class Rcon {
      **/
     public Rcon(String address, int port, String password, Log log) {
         
+    	// Copying the logger reference locally
+    	this.log = log;
+    	
         try {
         	
-        	this.log = log;
             this.ip = InetAddress.getByName(address);
             this.port = port;
             this.password = password;
