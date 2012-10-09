@@ -56,7 +56,7 @@ public class RecordNotFoundException extends Exception {
     /**
      * Object constructor.
      * 
-     * @author Mathias Van Malderen
+     * @author Daniele Pantaleone
      * @param  cause A throwable cause
      * @return RecordNotFoundException
      **/
