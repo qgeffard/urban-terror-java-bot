@@ -104,7 +104,7 @@ public class Command {
 	 **/
 	public String toString() {
 		
-		// Returning a string object representation
+		// Returning a string object representation.
 		return "[ name : " + this.name + " | alias : " + this.alias + " | minLevel : " + this.minGroup.level + " | maxLevel : " + this.maxGroup.level + " method : " + this.method.getName() + " ]";   
 	}
 
