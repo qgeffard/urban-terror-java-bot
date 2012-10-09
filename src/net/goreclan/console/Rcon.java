@@ -103,7 +103,7 @@ public class Rcon {
     	this.log.trace("RCON sending [" + this.ip.getHostAddress() + ":" + this.port + "]: " + command);
     	String send = "xxxxrcon " + this.password + " " + command;
         
-        byte[] recvBuffer = new byte[1024];
+        byte[] recvBuffer = new byte[2048];
         byte[] sendBuffer = send.getBytes();
        
         sendBuffer[0] = (byte)0xff; // Replacing 1st byte with the correct OutOfBound byte

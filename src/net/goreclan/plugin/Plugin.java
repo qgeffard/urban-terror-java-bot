@@ -1,33 +1,37 @@
 /**
+ * TODO: Add JavaDoc
+ * 
  * @author      Daniele Pantaleone
  * @version     1.0
- * @copyright   Daniele Pantaleone, 27 September, 2012
- * @package     net.goreclan.plugin
+ * @copyright   Daniele Pantaleone, 09 October, 2012
+ * @package     net.goreclan.plugins
  **/
 
 package net.goreclan.plugin;
 
-import net.goreclan.bot.IrcBot;
-import net.goreclan.command.Command;
+import net.goreclan.bot.Command;
+import net.goreclan.console.Console;
+import net.goreclan.domain.Client;
+import net.goreclan.domain.Group;
 import net.goreclan.logger.Log;
 import net.goreclan.parser.XmlConfigParser;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jibble.pircbot.User;
 
 public abstract class Plugin {
 	
-	protected final IrcBot bot;
-	protected final Log log;
+	protected final Console console;
 	protected final XmlConfigParser config;
+	protected final Log log;
+
+	protected Map<String, Command> commands;
 	
 	protected boolean enabled = true;
-	
-	protected Map<String, Command> commands;
 	
 	
 	/**
@@ -36,11 +40,11 @@ public abstract class Plugin {
 	 * @author Daniele Pantaleone
 	 * @return Plugin
 	 **/
-	public Plugin(IrcBot bot, Log log, String conf) {
-		this.bot = bot;
-		this.log = log;
-		this.config = new XmlConfigParser(conf);
-		this.commands = new HashMap<String, Command>();
+	public Plugin(Console console, Log log, String conf) {
+		this.console = console;								// Copying console reference.
+		this.log = log;										// Copying main log reference.
+		this.config = new XmlConfigParser(conf);			// Creating a new parser for the plugin configuration file.
+		this.commands = new HashMap<String, Command>();		// Initializing the commands hash map in order to register commands.
 	}
 	
 	
@@ -54,7 +58,7 @@ public abstract class Plugin {
 	
 	
 	/**
-	 * Enable the plugin
+	 * Enable the plugin.
 	 * 
 	 * @author Daniele Pantaleone
 	 */
@@ -64,7 +68,7 @@ public abstract class Plugin {
 	
 	
 	/**
-	 * Disable the plugin
+	 * Disable the plugin.
 	 * 
 	 * @author Daniele Pantaleone
 	 */
@@ -74,7 +78,7 @@ public abstract class Plugin {
 	
 	
 	/**
-	 * Tell if the plugin is enabled
+	 * Tells whether the plugin is enabled.
 	 * 
 	 * @author Daniele Pantaleone
 	 * @return boolean
@@ -90,25 +94,31 @@ public abstract class Plugin {
 	 * @author Daniele Pantaleone
 	 * @throws SecurityException 
 	 * @throws NoSuchMethodException 
-	 **/
-	public void registerCommand(String cmdName, String cmdFunc, String cmdLevel) throws NoSuchMethodException, SecurityException {
+	 **/	
+	public void addCommand(String cmdName, String cmdAlias, Group minGroup, Group maxGroup) throws NoSuchMethodException, SecurityException {
 		
-		String pluginName = this.getClass().getName().substring(20, this.getClass().getName().length() - 6);
-		this.log.debug("Registering command '!" + cmdName + "' for plugin " + pluginName + " [ Method : " + cmdFunc + " | Level : " + cmdLevel + " ].");		
-		Command cmd = new Command(this.getClass().getMethod(cmdFunc, User.class, String.class, String.class), cmdLevel);
-		this.commands.put(cmdName, cmd);
+		// Converting command name/alias to lowercase.
+		// We are not going to accept commands with uppercase chars
+		// because this will result in a failure while registering commands
+		// having the same name, but using different character cases.
+		cmdName = cmdName.toLowerCase();
+		cmdAlias = cmdName.toLowerCase();
+		
+		String cmdMethod = "Cmd" + Character.toUpperCase(cmdName.charAt(0)) + cmdName.substring(1);
+		Command cmd = new Command(cmdName, cmdAlias, minGroup, maxGroup, this.getClass().getMethod(cmdMethod, Client.class, String.class));
+		this.log.debug("Registering command: " + cmd.toString() + ".");
 		
 	}
 	
 	
 	/**
-	 * Tells if the Plugin registered the given command.
+	 * Tells whether the Plugin registered the given command.
 	 * 
 	 * @author Daniele Pantaleone
 	 * @param  cmdName The command name
 	 * @return boolean
 	 **/
-	public boolean hasRegisteredCommand(String cmdName) {
+	public boolean hasCommand(String cmdName) {
 		return this.commands.containsKey(cmdName);
 	}
 	
