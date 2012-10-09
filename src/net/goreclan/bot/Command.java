@@ -33,37 +33,60 @@ public class Command {
 	 * @return Command
 	 **/
 	public Command(String name, String alias, Group minGroup, Group maxGroup, Method method) {
-		this.setName(name);
-		this.setAlias(alias);
-		this.setMinGroup(minGroup);
-		this.setMaxGroup(maxGroup);
-		this.setMethod(method);
-	}
-	
-	/**
-	 * Set the command method.
-	 * 
-	 * @author Daniele Pantaleone
-	 * @param  method The method to map
-	 **/
-	public void setMethod(Method method) {
+		this.name = name;
+		this.alias = alias;
+		this.minGroup = minGroup;
+		this.maxGroup = maxGroup;
 		this.method = method;
 	}
 	
 	
 	/**
-	 * Set the command level.
+	 * Return the command name.
 	 * 
 	 * @author Daniele Pantaleone
-	 * @param  level  The corresponding method necessary level
+	 * @return String
 	 **/
-	public void setLevel(String level) {
-		this.level = level;
+	public String getName() {
+		return this.name;
 	}
 	
 	
 	/**
-	 * Return the command method.
+	 * Return the command alias.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @return String
+	 **/
+	public String getAlias() {
+		return this.alias;
+	}
+	
+	
+	/**
+	 * Return the minimum group authorized to use the command.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @return Group
+	 **/
+	public Group getMinGroup() {
+		return this.minGroup;
+	}
+	
+
+	/**
+	 * Return the maximum group authorized to use the command.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @return Group
+	 **/
+	public Group getMaxGroup() {
+		return this.maxGroup;
+	}
+	
+	
+	/**
+	 * Return the method where on which the command has been mapped over.
 	 * 
 	 * @author Daniele Pantaleone
 	 * @return Method
@@ -74,13 +97,15 @@ public class Command {
 	
 	
 	/**
-	 * Return the corresponding method necessary level.
+	 * String object representation.
 	 * 
 	 * @author Daniele Pantaleone
 	 * @return String
 	 **/
-	public String getLevel() {
-		return this.level;
+	public String toString() {
+		
+		// Returning a string object representation
+		return "[ name : " + this.name + " | alias : " + this.alias + " | minLevel : " + this.minGroup.level + " | maxLevel : " + this.maxGroup.level + " method : " + this.method.getName() + " ]";   
 	}
 
 }
