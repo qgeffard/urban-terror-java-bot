@@ -1,7 +1,7 @@
 /**
  * This class goal is to return a connection with a MySQL DBMS.
- * If the connection is not established yet, it create a new one 
- * before returning the connection handler.
+ * If the connection is not established yet, it will create a new one 
+ * before returning the database connection resource.
  *
  * @author      Daniele Pantaleone
  * @version     1.2
