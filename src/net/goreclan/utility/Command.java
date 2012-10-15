@@ -4,7 +4,7 @@
  * @author      Daniele Pantaleone
  * @version     1.0
  * @copyright   Daniele Pantaleone, 08 October, 2012
- * @package     net.goreclan.bot
+ * @package     net.goreclan.utility
  **/
 
 package net.goreclan.utility;
