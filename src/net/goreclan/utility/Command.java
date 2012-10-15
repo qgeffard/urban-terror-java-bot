@@ -7,7 +7,7 @@
  * @package     net.goreclan.bot
  **/
 
-package net.goreclan.bot;
+package net.goreclan.utility;
 
 import java.lang.reflect.Method;
 
