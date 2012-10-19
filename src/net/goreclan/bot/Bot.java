@@ -26,11 +26,13 @@ import org.apache.log4j.PatternLayout;
 import net.goreclan.console.Console;
 import net.goreclan.parser.Parser;
 import net.goreclan.plugin.Plugin;
+import net.goreclan.utility.DataSourceManager;
 
 public class Bot {
 	
+	public static final String BOTNAME = "[GORE]BOT";
 	public static final String VERSION = "1.0";
-	public static final String AUTHOR = "Daniele Pantaleone (Fenix), Mathias Van Malderen (Typo)";
+	public static final String AUTHOR = "Daniele Pantaleone, Mathias Van Malderen";
 	
 	public static Log log;														// Main BOT logger utility.
 	public static HierarchicalINIConfiguration config;							// Main configuration .ini file.
@@ -38,7 +40,7 @@ public class Bot {
 	public static Parser parser;												// Urban Terror 4.2 log parser.
 	
 	public static Map<String, String> game;										// Hold current game cvars settings.
-	public static Map<String, Plugin> plugins;									// Hiold loaded BOT plugins.
+	public static Map<String, Plugin> plugins;									// Hold loaded BOT plugins.
 	
 	
 	/**
@@ -89,8 +91,19 @@ public class Bot {
 			// Creating the main Log object.
 			log = new Log4JLogger(logger);
 			
+			// We got a fully initialized logger utility now.
+			// We can start printing some info messages on it.
+			log.info("Starting " + BOTNAME + " v" + VERSION + " [ " + AUTHOR + " ].");
+			
+			// Initializing DataSourcemanager class.
+			DataSourceManager.setDCS(config.getString("database.dcs"));
+			DataSourceManager.setUsername(config.getString("database.username"));
+			DataSourceManager.setPassword(config.getString("database.password"));
+			
+			log.info("DataSourceManager initialized: " + config.getString("database.dcs") + ".");
+			
 			// Creating a Map where to store game cvars.
-			game = new LinkedHashMap<String,String>();
+			game = new LinkedHashMap<String, String>();
 			
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
