@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 import net.goreclan.logger.Log;
 
 
-public class IoUrT42LogParser {
+public class Parser {
     
 	private final Log log;
     private final Map<String, Pattern> lineformats;
@@ -29,7 +29,7 @@ public class IoUrT42LogParser {
      * @param  log A reference to the main bot logger object
      * @return IoUrt42LogParser
      **/
-    public IoUrT42LogParser(Log log) {
+    public Parser(Log log) {
     	
     	this.log = log;
         this.lineformats = new HashMap<String,Pattern>();
