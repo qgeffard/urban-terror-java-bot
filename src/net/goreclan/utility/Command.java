@@ -107,5 +107,23 @@ public class Command {
 		// Returning a string object representation.
 		return "[ name : " + this.name + " | alias : " + this.alias + " | minLevel : " + this.minGroup.level + " | maxLevel : " + this.maxGroup.level + " method : " + this.method.getName() + " ]";   
 	}
+	
+	
+	//////////////////////////////////////////////
+	// BEGIN STATIC METHODS
+	//////////////////////////////////////////////
+	
+	
+	/**
+	 * Return a formatted command method name.
+	 * 
+	 * @author Daniele Pantaleone
+	 * @param  name The command name
+	 * @return String
+	 **/
+	public static String getCommandMethod(String name) {
+		// This will act like a ".title()" method missing in the Java API.
+		return "Cmd" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
+	}
 
 }
