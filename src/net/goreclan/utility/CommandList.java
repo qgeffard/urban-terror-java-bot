@@ -148,7 +148,7 @@ public class CommandList {
 		// Seems we are registering a new command so far.
 		// Adding <key1,command> to map1 and <key2,key1> to map2.
 		this.map1.put(key1, command);
-		this.map2.put(key2, key2);
+		this.map2.put(key2, key1);
 		
 	}
 	
