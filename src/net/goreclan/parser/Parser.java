@@ -13,12 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import net.goreclan.logger.Log;
-
+import org.apache.log4j.Logger;
 
 public class Parser {
     
-	private final Log log;
+	private final Logger log;
     private final Map<String, Pattern> lineformats;
 
     
@@ -29,7 +28,7 @@ public class Parser {
      * @param  log A reference to the main bot logger object
      * @return IoUrt42LogParser
      **/
-    public Parser(Log log) {
+    public Parser(Logger log) {
     	
     	this.log = log;
         this.lineformats = new HashMap<String,Pattern>();

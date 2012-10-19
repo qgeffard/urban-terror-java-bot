@@ -16,7 +16,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import net.goreclan.logger.Log;
+import org.apache.commons.logging.Log;
+
 
 public class Rcon {
     
@@ -37,7 +38,7 @@ public class Rcon {
      * @param  address The remote server address
      * @param  port The virtual port on which the server is accepting connections
      * @param  password The server Rcon password
-     * @param  log A reference to the main bot logger object
+     * @param  log A reference to the main BOT logger object
      * @return Rcon
      **/
     public Rcon(String address, int port, String password, Log log) {
@@ -53,10 +54,10 @@ public class Rcon {
             this.socket = new DatagramSocket();
             this.socket.setSoTimeout(this.timeout);
              
-            this.log.debug("RCON interface configured [ ip : " + this.ip.getHostAddress() + " | port : " + this.port + " | password : " + this.password + " ]");
+            this.log.debug("RCON utility configured [ ip : " + this.ip.getHostAddress() + " | port : " + this.port + " | password : " + this.password + " ]");
             
         } catch (UnknownHostException | SocketException e) {
-            this.log.fatal(e.toString());
+        	this.log.fatal("Unable to initialize RCON utility", e);
             System.exit(1);
         }
     }
@@ -96,7 +97,6 @@ public class Rcon {
      * @param  command The command to be sent to the server engine
      * @throws IOException 
      * @return String
-
      **/
     public String sendRead(String command) throws IOException {
         

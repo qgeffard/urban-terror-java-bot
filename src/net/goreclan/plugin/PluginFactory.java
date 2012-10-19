@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import net.goreclan.console.Console;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
 
 public class PluginFactory {
 	
@@ -30,7 +30,7 @@ public class PluginFactory {
 	 * @param  config The plugin configuration file name
 	 * @return Plugin
 	 **/
-	public static Plugin buildPlugin(Console console, Logger log, String name, String config) {
+	public static Plugin buildPlugin(Console console, Log log, String name, String config) {
 		
 		try {
 			
@@ -38,7 +38,7 @@ public class PluginFactory {
 			// In this way the plugin can perform all the operations needed since we are passing to the plugin
 			// constructor his XML configuration file name (actually we are passing the whole path ^^).
 			Class<?> pluginClass = Class.forName("net.goreclan.plugin." + Character.toUpperCase(name.charAt(0)) + name.substring(1));
-			Constructor<?> pluginConst = pluginClass.getConstructor(Console.class, Logger.class, String.class);
+			Constructor<?> pluginConst = pluginClass.getConstructor(Console.class, Log.class, String.class);
 			log.debug("Loading plugin: " + name + "...");
 			
 			// Creating the plugin object and initializing it.

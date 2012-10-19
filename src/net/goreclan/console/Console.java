@@ -17,11 +17,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+
 import net.goreclan.domain.Client;
-import net.goreclan.exception.XmlConfigParserException;
+import net.goreclan.exception.ParserException;
 import net.goreclan.iourt42.Gametype;
 import net.goreclan.iourt42.Team;
-import net.goreclan.logger.Log;
 import net.goreclan.parser.BooleanParser;
 
 public class Console {
@@ -42,7 +43,7 @@ public class Console {
     	// Configuring the RCON utility object. Console can't deal with the game without it.
     	// Exceptions are handled directly inside the RCON class, because if it fails to
     	// start, a fatal exception will be thrown and the system exit instantly.
-        this.rcon = new Rcon(address, port, password, log);
+    	this.rcon = new Rcon(address, port, password, log);
     }
     
     
@@ -444,9 +445,9 @@ public class Console {
      * @return boolean
      * @author Daniele Pantaleone
      * @throws IOException 
-     * @throws XmlConfigParserException
+     * @throws ParserException
      **/
-    public boolean getMatchmode() throws IOException, XmlConfigParserException {
+    public boolean getMatchmode() throws IOException, ParserException {
         return BooleanParser.valueOf(this.getCvar("g_matchmode"));       
     }
     

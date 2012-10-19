@@ -13,17 +13,18 @@ import net.goreclan.console.Console;
 import net.goreclan.domain.Client;
 import net.goreclan.domain.Group;
 import net.goreclan.exception.CommandRegisterException;
-import net.goreclan.parser.XmlConfigParser;
 import net.goreclan.utility.Command;
 import net.goreclan.utility.CommandList;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.HierarchicalINIConfiguration;
+import org.apache.commons.logging.Log;
 
 public abstract class Plugin {
 	
 	protected final Console console;
-	protected final Logger log;
-	protected final XmlConfigParser config;
+	protected final Log log;
+	protected final HierarchicalINIConfiguration config;
 	
 	protected CommandList commands;
 	
@@ -38,12 +39,13 @@ public abstract class Plugin {
 	 * @param  log A reference to the main BOT logger
 	 * @param  conf The plugin configuration file name
 	 * @return Plugin
+	 * @throws ConfigurationException 
 	 **/
-	public Plugin(Console console, Logger log, String conf) {
-		this.console = console;						// Copying console reference.
-		this.log = log;								// Copying main log reference.
-		this.config = new XmlConfigParser(conf);	// Creating a new parser for the plugin configuration file.
-		this.commands = new CommandList();			// Creating a new CommandList object for future command registering.
+	public Plugin(Console console, Log log, String conf) throws ConfigurationException {
+		this.console = console;									// Copying console reference.
+		this.log = log;											// Copying main log reference.
+		this.config = new HierarchicalINIConfiguration(conf);	// Creating a new parser for the plugin configuration file.
+		this.commands = new CommandList();						// Creating a new CommandList object for future command registering.
 	}	
 	
 	

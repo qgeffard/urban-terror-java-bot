@@ -12,7 +12,7 @@ package net.goreclan.parser;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.goreclan.exception.XmlConfigParserException;
+import net.goreclan.exception.ParserException;
 
 public class BooleanParser {
     
@@ -31,11 +31,11 @@ public class BooleanParser {
     /**
      * @return Boolean
      * @author Mathias Van Malderen
-     * @throw ParserException
+     * @throws ParserException 
      **/
-    public static Boolean valueOf(String s) {
+    public static Boolean valueOf(String s) throws ParserException {
         Boolean value = stringToBoolean.get(s.toLowerCase());
-        if (value == null) throw new XmlConfigParserException("Unable to parse this value as a Boolean: " + s);
+        if (value == null) throw new ParserException("Unable to parse this value as a Boolean: " + s);
         return value;
     }
     
