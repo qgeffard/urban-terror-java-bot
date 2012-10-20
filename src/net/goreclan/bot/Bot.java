@@ -34,13 +34,13 @@ public class Bot {
 	public static final String VERSION = "1.0";
 	public static final String AUTHOR = "Daniele Pantaleone, Mathias Van Malderen";
 	
-	public static Log log;														// Main BOT logger utility.
-	public static HierarchicalINIConfiguration config;							// Main configuration .ini file.
-	public static Console console;												// Urban Terror 4.2 console utility.
-	public static Parser parser;												// Urban Terror 4.2 log parser.
+	public static Log log;												// Main BOT logger utility.
+	public static HierarchicalINIConfiguration config;					// Main configuration .ini file.
+	public static Console console;										// Urban Terror 4.2 console utility.
+	public static Parser parser;										// Urban Terror 4.2 log parser.
 	
-	public static Map<String, String> game;										// Hold current game cvars settings.
-	public static Map<String, Plugin> plugins;									// Hold loaded BOT plugins.
+	public static Map<String, String> game;								// Hold current game cvars settings.
+	public static Map<String, Plugin> plugins;							// Hold loaded BOT plugins.
 	
 	
 	/**
@@ -93,14 +93,14 @@ public class Bot {
 			
 			// We got a fully initialized logger utility now.
 			// We can start printing some info messages on it.
-			log.info("Starting " + BOTNAME + " v" + VERSION + " [ " + AUTHOR + " ].");
+			log.info("Starting " + BOTNAME + " v" + VERSION + " [ " + AUTHOR + " ]");
 			
 			// Initializing DataSourcemanager class.
 			DataSourceManager.setDCS(config.getString("database.dcs"));
 			DataSourceManager.setUsername(config.getString("database.username"));
 			DataSourceManager.setPassword(config.getString("database.password"));
 			
-			log.info("DataSourceManager initialized: " + config.getString("database.dcs") + ".");
+			log.info("DataSourceManager initialized: " + config.getString("database.dcs"));
 			
 			// Creating a Map where to store game cvars.
 			game = new LinkedHashMap<String, String>();
