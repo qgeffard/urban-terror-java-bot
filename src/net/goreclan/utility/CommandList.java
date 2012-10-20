@@ -143,7 +143,7 @@ public class CommandList {
 	public void put(String key1, String key2, Command command) throws CommandRegisterException {
 		
 		if ((this.map1.containsKey(key1)) || (this.map1.containsKey(key2)) || (this.map2.containsKey(key1)) || (this.map2.containsKey(key2)))
-			throw new CommandRegisterException("Duplicate command detected: skipping command registration [ !" + key1 + " | !" + key2 +"].");
+			throw new CommandRegisterException("Unable to register command. Duplicate command detected: [ !" + key1 + " - !" + key2 +"].");
 		
 		// Seems we are registering a new command so far.
 		// Adding <key1,command> to map1 and <key2,key1> to map2.
