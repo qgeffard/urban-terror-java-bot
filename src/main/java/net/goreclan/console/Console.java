@@ -189,10 +189,10 @@ public interface Console {
 	 *
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced
-     * @param  team The team where to force the player in
+     * @param  teamname The team where to force the player in
      * @throws IOException 
      **/
-    public void forceteam(int slot, Team team) throws IOException;
+    public void forceteam(int slot, Team teamname) throws IOException;
     
     
     /**
@@ -204,7 +204,7 @@ public interface Console {
      * @throws IndexOutOfBoundsException
      * @throws IOException 
      **/
-    public void forceteam(Client client, String team) throws IndexOutOfBoundsException, IOException;
+    public void forceteam(Client client, String teamname) throws IndexOutOfBoundsException, IOException;
     
     
     /**
