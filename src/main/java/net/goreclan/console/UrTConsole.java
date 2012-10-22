@@ -2,7 +2,7 @@
  * Urban Terror 4.2 RCON console implementation.
  * 
  * @author      Daniele Pantaleone
- * @version     1.2.1
+ * @version     1.2.2
  * @copyright   Daniele Pantaleone, 04 October, 2012
  * @package     net.goreclan.console
  **/
@@ -10,9 +10,8 @@
 package net.goreclan.console;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -29,6 +28,7 @@ import net.goreclan.parser.BooleanParser;
 public class UrTConsole implements Console{
     
     private Rcon rcon;
+    private Log log;
     
     
     /**
@@ -39,13 +39,14 @@ public class UrTConsole implements Console{
      * @param  port The virtual port on which the server is accepting connections
      * @param  password The server Rcon password
      * @param  log A reference to the main bot logger object
-     * @return Console
+     * @return An initialized UrtConsole object.
      **/
     public UrTConsole(String address, int port, String password, Log log) {
     	// Configuring the RCON utility object. Console can't deal with the game without it.
     	// Exceptions are handled directly inside the RCON class, because if it fails to
     	// start, a fatal exception will be thrown and the system exit instantly.
     	this.rcon = new Rcon(address, port, password, log);
+    	this.log = log;
     }
     
     
@@ -54,7 +55,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client to ban from the server
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed 
      **/
     public void ban(Client client) throws IOException {
         this.rcon.sendNoRead("addip " + client.ip);
@@ -66,7 +67,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  ip The IP address to ban from the server
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void ban(String ip) throws IOException {
         this.rcon.sendNoRead("addip " + ip);
@@ -79,7 +80,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  message The message to be printed
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void bigtext(String message) throws IOException {
         this.rcon.sendNoRead("bigtext \"" + message + "\"");
@@ -90,9 +91,9 @@ public class UrTConsole implements Console{
      * Dump user information for the specified client.
      * 
      * @author Daniele Pantaleone
-     * @param  client The client on who perform the dumpuser command
-     * @throws IOException 
-     * @return Map<String, String>
+     * @param  client The client you want to retrieve informations
+     * @throws IOException If the RCON command fails in being executed
+     * @return A map with the dumpuser result. This will return null if the player is not connected anymore
      **/
     public Map<String, String> dumpuser(Client client) throws IOException {
         
@@ -113,6 +114,11 @@ public class UrTConsole implements Console{
         Pattern pattern = Pattern.compile("^\\s*([\\w]+)\\s+(.+)$");
         String[] lines = result.split("\n");
         
+        if (!lines[0].equals("userinfo")) {
+        	this.log.debug("Client " + client.slot + "recently disconnected but is character is still in game...");
+        	return null;
+        }
+        
         for (String line: lines) {
             Matcher m = pattern.matcher(line);
             if (m.matches()) map.put(m.group(1), m.group(2));
@@ -126,10 +132,10 @@ public class UrTConsole implements Console{
     /**
      * Dump user information for the specified player slot.
      * 
-     * @return Map<String, String>
      * @author Daniele Pantaleone
      * @param  slot The player slot on which perform the dumpuser command
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return A map with the dumpuser result. This will return null if the player is not connected anymore
      **/
     public Map<String, String> dumpuser(int slot) throws IOException {
         
@@ -150,6 +156,11 @@ public class UrTConsole implements Console{
         Pattern pattern = Pattern.compile("^\\s*([\\w]+)\\s+(.+)$");
         String[] lines = result.split("\n");
         
+        if (!lines[0].equals("userinfo")) {
+        	this.log.debug("Client " + slot + "recently disconnected but is character is still in game...");
+        	return null;
+        }
+        
         for (String line: lines) {
             Matcher m = pattern.matcher(line);
             if (m.matches()) map.put(m.group(1), m.group(2));
@@ -165,7 +176,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced in the blue team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceblue(Client client) throws IOException {
     	// Do not execute if the client is already in the specified team.
@@ -180,7 +191,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced in the blue team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceblue(int slot) throws IOException {
     	// Since we do not have a Client object as input, we cannot match the current
@@ -195,7 +206,7 @@ public class UrTConsole implements Console{
 	 *
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcefree(Client client) throws IOException {
     	this.rcon.sendNoRead("forceteam " + client.slot + " free");
@@ -207,7 +218,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcefree(int slot) throws IOException {
     	this.rcon.sendNoRead("forceteam " + slot +" free");
@@ -219,7 +230,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced in the red team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcered(Client client) throws IOException {
     	// Do not execute if the client is already in the specified team.
@@ -234,7 +245,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced in the red team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcered(int slot) throws IOException {
     	// Since we do not have a Client object as input, we cannot match the current
@@ -249,7 +260,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced in the spectators team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcespec(Client client) throws IOException {
     	// Do not execute if the client is already in the specified team.
@@ -264,7 +275,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced in the spectators team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcespec(int slot) throws IOException {
     	// Since we do not have a Client object as input, we cannot match the current
@@ -279,7 +290,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced substitute
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcesub(Client client) throws IOException {
         this.rcon.sendNoRead("forcesub " + client.slot);
@@ -291,7 +302,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced substitute
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcesub(int slot) throws IOException {
         this.rcon.sendNoRead("forcesub " + slot);
@@ -304,7 +315,7 @@ public class UrTConsole implements Console{
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced
      * @param  team The team where to force the player in
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceteam(Client client, Team team) throws IOException {
     	if (team == Team.TEAM_RED) this.forcered(client);
@@ -320,7 +331,7 @@ public class UrTConsole implements Console{
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced
      * @param  team The team where to force the player in
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceteam(int slot, Team team) throws IOException {
     	if (team == Team.TEAM_RED) this.forcered(slot);
@@ -336,8 +347,8 @@ public class UrTConsole implements Console{
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced
      * @param  teamname A string representing the name of the team where to force the player in
-     * @throws IndexOutOfBoundsException
-     * @throws IOException 
+     * @throws IndexOutOfBoundsException If the method fails in retrieving a Team object by matching the given team name
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceteam(Client client, String teamname) throws IndexOutOfBoundsException, IOException {
     	Team team = Team.getByName(teamname);
@@ -351,8 +362,8 @@ public class UrTConsole implements Console{
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced
      * @param  teamname A string representing the name of the team where to force the player in
-     * @throws IndexOutOfBoundsException
-     * @throws IOException 
+     * @throws IndexOutOfBoundsException If the method fails in retrieving a Team object by matching the give team name
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceteam(int slot, String teamname) throws IndexOutOfBoundsException, IOException {
     	Team team = Team.getByName(teamname);
@@ -364,7 +375,9 @@ public class UrTConsole implements Console{
      * Return a cvar value.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @param  name The cvar name
+     * @throws IOException If the RCON command fails in being executed
+     * @return The cvar value as a String
      **/
     public String getCvar(String name) throws IOException {
     	
@@ -384,9 +397,9 @@ public class UrTConsole implements Console{
      * Return the fraglimit value.
      * 
      * @author Daniele Pantaleone 
-     * @throws IOException
-     * @throws NumberFormatException 
-     * @return int
+     * @throws IOException If the RCON command fails in being executed
+     * @throws NumberFormatException If the conversion between String and Integer fails
+     * @return The current fraglimit value
      **/
     public int getFraglimit() throws IOException, NumberFormatException {
         return Integer.valueOf(this.getCvar("fraglimit"));
@@ -397,9 +410,9 @@ public class UrTConsole implements Console{
      * Return the current gametype.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException
-     * @throws NumberFormatException
-     * @return Gametype
+     * @throws IOException If the RCON command fails in being executed
+     * @throws NumberFormatException If the conversion between String and Integer fails
+     * @return The Gametype object matching the current gametype
      **/
     public Gametype getGametype() throws IOException, NumberFormatException {
         return Gametype.getByCode(Integer.valueOf(this.getCvar("g_gametype")));
@@ -410,8 +423,8 @@ public class UrTConsole implements Console{
      * Return the current map name.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException
-     * @return String 
+     * @throws IOException If the RCON command fails in being executed
+     * @return The current map name 
      **/
     public String getMap() throws IOException {
         
@@ -442,12 +455,36 @@ public class UrTConsole implements Console{
     
     
     /**
+     * Return a list of available maps.
+     * 
+     * @author Daniele Pantaleone
+     * @throws IOException If the RCON command fails in being executed
+     * @return A list of all the maps available on the server
+     **/
+    public List<String> getMapList() throws IOException {
+    	
+    	String result = this.rcon.sendRead("fdir *.bsp");
+    	List<String> maplist = new LinkedList<String>();
+    	Pattern pattern = Pattern.compile("^*maps/(.*).bsp$");
+    	
+    	String[] lines = result.split("\n");
+
+        for (String line: lines) {
+            Matcher matcher = pattern.matcher(line);
+            if (matcher.matches()) maplist.add(matcher.group(1));
+        }
+        
+        return maplist;
+    }
+    
+    
+    /**
      * Return a boolean value which inform of match mode activated/deactivated.
      * 
-     * @return boolean
      * @author Daniele Pantaleone
-     * @throws IOException 
-     * @throws ParserException
+     * @throws IOException If the RCON command fails in being executed
+     * @throws ParserException If the conversion between String and Boolean fails.
+     * @return TRUE if the match mode is activated, FALSE otherwise
      **/
     public boolean getMatchmode() throws IOException, ParserException {
         return BooleanParser.valueOf(this.getCvar("g_matchmode"));       
@@ -457,9 +494,9 @@ public class UrTConsole implements Console{
     /**
      * Return the next map name.
      * 
-     * @return String
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return The name of the nextmap set on the server
      **/
     public String getNextMap() throws IOException {
         return this.getCvar("g_nextmap");
@@ -469,9 +506,9 @@ public class UrTConsole implements Console{
     /**
      * Return an List containing the result of the "/rcon players" command.
      * 
-     * @return List<List<String>>
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return A list containing players informations
      **/
     public List<List<String>> getPlayers() throws IOException {
     	
@@ -503,7 +540,7 @@ public class UrTConsole implements Console{
             
             if (m.matches()) {
                 
-                List<String> x = new ArrayList<String>();
+                List<String> x = new LinkedList<String>();
                 x.add(matcher.group(1));  // Slot
                 x.add(matcher.group(2));  // Name
                 x.add(matcher.group(3));  // Team
@@ -525,9 +562,9 @@ public class UrTConsole implements Console{
     /**
      * Return an List containing the result of the "/rcon status" command.
      * 
-     * @return List<List<String>>
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return A list containing status informations
      **/
     public List<List<String>> getStatus() throws IOException {
         
@@ -559,7 +596,7 @@ public class UrTConsole implements Console{
             
             if (m.matches()) {
                 
-                List<String> x = new ArrayList<String>();
+                List<String> x = new LinkedList<String>();
                 x.add(matcher.group(1));  // Slot
                 x.add(matcher.group(2));  // Score
                 x.add(matcher.group(3));  // Ping
@@ -582,9 +619,9 @@ public class UrTConsole implements Console{
      * Return the timelimit value.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException
-     * @throws NumberFormatException
-     * @return int
+     * @throws IOException If the RCON command fails in being executed
+     * @throws NumberFormatException If the conversion between String and Integer fails
+     * @return The current timelimit value
      **/
     public int getTimelimit() throws IOException, NumberFormatException {
         return Integer.valueOf(this.getCvar("timelimit"));
@@ -596,7 +633,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be kicked from the server
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kick(Client client) throws IOException {
         this.rcon.sendNoRead("kick " + client.slot);
@@ -608,7 +645,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be kicked from the server
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kick(int slot) throws IOException {
         this.rcon.sendNoRead("kick " + slot);
@@ -621,7 +658,7 @@ public class UrTConsole implements Console{
      * @author Daniele Pantaleone
      * @param  client The client who is going to be kicked from the server
      * @param  reason The reason why the client is going to be kicked
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kick(Client client, String reason) throws IOException {
         this.rcon.sendNoRead("kick " + client.slot + reason);
@@ -634,7 +671,7 @@ public class UrTConsole implements Console{
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be kicked from the server
      * @param  reason The reason why the player with the specified slot is going to be kicked
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kick(int slot, String reason) throws IOException {
     	this.rcon.sendNoRead("kick " + slot + reason);
@@ -646,7 +683,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be killed
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kill(Client client) throws IOException {
         this.rcon.sendNoRead("smite " + client.slot);
@@ -658,7 +695,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be killed
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kill(int slot) throws IOException {
     	this.rcon.sendNoRead("smite " + slot);
@@ -670,7 +707,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  mapname The name of the map to load
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void map(String mapname) throws IOException {
         this.rcon.sendNoRead("map " + mapname);
@@ -682,7 +719,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone 
      * @param  client The client who is going to be muted
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void mute(Client client) throws IOException {
         this.rcon.sendNoRead("mute " + client.slot);
@@ -694,7 +731,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone 
      * @param  slot The slot of the player who is going to be muted
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void mute(int slot) throws IOException {
         this.rcon.sendNoRead("mute " + slot);
@@ -706,7 +743,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be nuked
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void nuke(Client client) throws IOException {
     	this.rcon.sendNoRead("nuke " + client.slot);
@@ -718,7 +755,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be nuked
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void nuke(int slot) throws IOException {
     	this.rcon.sendNoRead("nuke " + slot);
@@ -730,7 +767,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  message The message to print
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void say(String message) throws IOException {
         this.rcon.sendNoRead("say " + message);
@@ -743,7 +780,7 @@ public class UrTConsole implements Console{
      * @author Daniele Pantaleone
      * @param  name The name of the cvar
      * @param  value The value to assign to the cvar
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void setCvar(String name, String value) throws IOException {
         this.rcon.sendNoRead("set " + name + " \"" + value + "\"");
@@ -755,7 +792,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be slapped
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void slap(Client client) throws IOException {
         this.rcon.sendNoRead("slap " + client.slot);
@@ -767,7 +804,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be slapped
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void slap(int slot) throws IOException {
         this.rcon.sendNoRead("slap " + slot);
@@ -779,7 +816,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client whose we want to record a demo
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void startserverdemo(Client client) throws IOException {
         this.rcon.sendNoRead("startserverdemo " + client.slot);
@@ -791,7 +828,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player whose we want to record a demo
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void startserverdemo(int slot) throws IOException {
         this.rcon.sendNoRead("startserverdemo " + slot);
@@ -802,7 +839,7 @@ public class UrTConsole implements Console{
      * Start recording a server side demo of all the online players.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void startserverdemo() throws IOException {
         this.rcon.sendNoRead("startserverdemo all");
@@ -814,7 +851,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone 
      * @param  client The client whose we want to stop a demo recording
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void stopserverdemo(Client client) throws IOException {
         this.rcon.sendNoRead("stopserverdemo " + client.slot);
@@ -826,7 +863,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone 
      * @param  slot The slot of the player whose we want to stop a demo recording
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void stopserverdemo(int slot) throws IOException {
         this.rcon.sendNoRead("stopserverdemo " + slot);
@@ -837,10 +874,36 @@ public class UrTConsole implements Console{
      * Stop recording a server side demo of all the online players.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void stopserverdemo() throws IOException {
         this.rcon.sendNoRead("stopserverdemo all");
+    }
+    
+    
+    /**
+     * Send a provate message to a player.
+     * 
+     * @author Daniele Pantaleone
+     * @param  client The client you want to send the message
+     * @param  message The message to be sent
+     * @throws IOException If the RCON command fails in being executed
+     **/
+    public void tell(Client client, String message) throws IOException {
+    	this.rcon.sendNoRead("tell " + client.slot + message);
+    }
+    
+    
+    /**
+     * Send a provate message to a player.
+     * 
+     * @author Daniele Pantaleone
+     * @param  slot The slot of the player you want to send the message
+     * @param  message The message to be sent
+     * @throws IOException If the RCON command fails in being executed
+     **/
+    public void tell(int slot, String message) throws IOException {
+    	this.rcon.sendNoRead("tell " + slot + message);
     }
     
     
@@ -849,7 +912,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  client The client we want to unban
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void unban(Client client) throws IOException {
         this.rcon.sendNoRead("removeip " + client.ip);
@@ -861,7 +924,7 @@ public class UrTConsole implements Console{
      * 
      * @author Daniele Pantaleone
      * @param  ip The IP address of the player we want to unban
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void unban(String ip) throws IOException {
         this.rcon.sendNoRead("removeip " + ip);
@@ -870,12 +933,12 @@ public class UrTConsole implements Console{
     
     /**
      * Write a message directly in the Urban Terror console.
-     * Try to avoid the use of this command. Instead use the other 
-     * prebuild and optimized methods available in this class.
+     * Try to avoid the use of this command. Use instead the other optimized methods available in this class.
      * 
      * @author Daniele Pantaleone
      * @param  command The command to execute
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return The server response to the RCON command
      **/
     public String write(String command) throws IOException  {
         return this.rcon.sendRead(command);

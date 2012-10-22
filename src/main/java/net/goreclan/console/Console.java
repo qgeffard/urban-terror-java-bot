@@ -2,7 +2,7 @@
  * Urban Terror 4.2 RCON console interface.
  * 
  * @author      Daniele Pantaleone
- * @version     1.2.1
+ * @version     1.0
  * @copyright   Daniele Pantaleone, 04 October, 2012
  * @package     net.goreclan.console
  **/
@@ -25,7 +25,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client to ban from the server
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void ban(Client client) throws IOException;
     
@@ -35,7 +35,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  ip The IP address to ban from the server
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void ban(String ip) throws IOException;
     
@@ -46,7 +46,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  message The message to be printed
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void bigtext(String message) throws IOException;
     
@@ -56,8 +56,8 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client on who perform the dumpuser command
-     * @throws IOException 
-     * @return Map<String, String>
+     * @throws IOException If the RCON command fails in being executed
+     * @return A map with the dumpuser result. This will return null if the player is not connected anymore
      **/
     public Map<String, String> dumpuser(Client client) throws IOException;
     
@@ -65,10 +65,10 @@ public interface Console {
     /**
      * Dump user information for the specified player slot.
      * 
-     * @return Map<String, String>
      * @author Daniele Pantaleone
      * @param  slot The player slot on which perform the dumpuser command
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return A map with the dumpuser result. This will return null if the player is not connected anymore 
      **/
     public Map<String, String> dumpuser(int slot) throws IOException;
         
@@ -78,7 +78,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced in the blue team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceblue(Client client) throws IOException;
     
@@ -88,7 +88,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced in the blue team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceblue(int slot) throws IOException;
     
@@ -98,7 +98,7 @@ public interface Console {
 	 *
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcefree(Client client) throws IOException;
     
@@ -108,7 +108,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcefree(int slot) throws IOException;
     
@@ -118,7 +118,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced in the red team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcered(Client client) throws IOException;
     
@@ -128,7 +128,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced in the red team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcered(int slot) throws IOException;
     
@@ -138,7 +138,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced in the spectators team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcespec(Client client) throws IOException;
     
@@ -148,7 +148,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced in the spectators team
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcespec(int slot) throws IOException;
     
@@ -158,7 +158,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced substitute
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcesub(Client client) throws IOException;
     
@@ -168,7 +168,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced substitute
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forcesub(int slot) throws IOException;
     
@@ -179,7 +179,7 @@ public interface Console {
      * @author Daniele Pantaleone
      * @param  client The client who is going to be forced
      * @param  team The team where to force the player in
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceteam(Client client, Team team) throws IOException;
     
@@ -190,7 +190,7 @@ public interface Console {
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be forced
      * @param  teamname The team where to force the player in
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceteam(int slot, Team teamname) throws IOException;
     
@@ -202,7 +202,7 @@ public interface Console {
      * @param  client The client who is going to be forced
      * @param  teamname A string representing the name of the team where to force the player in
      * @throws IndexOutOfBoundsException
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceteam(Client client, String teamname) throws IndexOutOfBoundsException, IOException;
     
@@ -214,7 +214,7 @@ public interface Console {
      * @param  slot The slot of the player who is going to be forced
      * @param  team A string representing the name of the team where to force the player in
      * @throws IndexOutOfBoundsException
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void forceteam(int slot, String team) throws IndexOutOfBoundsException, IOException;
     
@@ -223,7 +223,9 @@ public interface Console {
      * Return a cvar value.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @param  name The cvar name
+     * @throws IOException If the RCON command fails in being executed
+     * @return The cvar value as a String
      **/
     public String getCvar(String name) throws IOException;
     
@@ -232,9 +234,9 @@ public interface Console {
      * Return the fraglimit value.
      * 
      * @author Daniele Pantaleone 
-     * @throws IOException
-     * @throws NumberFormatException 
-     * @return int
+     * @throws IOException If the RCON command fails in being executed
+     * @throws NumberFormatException If the conversion between String and Integer fails.
+     * @return The current fraglimit value
      **/
     public int getFraglimit() throws IOException, NumberFormatException;
     
@@ -243,9 +245,9 @@ public interface Console {
      * Return the current gametype.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException
-     * @throws NumberFormatException
-     * @return Gametype
+     * @throws IOException If the RCON command fails in being executed
+     * @throws NumberFormatException If the conversion between String and Integer fails
+     * @return The Gametype object matching the current gametype
      **/
     public Gametype getGametype() throws IOException, NumberFormatException;
     
@@ -254,19 +256,29 @@ public interface Console {
      * Return the current map name.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException
-     * @return String 
+     * @throws IOException If the RCON command fails in being executed
+     * @return The current map name 
      **/
     public String getMap() throws IOException;
     
     
     /**
+     * Return a list of available maps.
+     * 
+     * @author Daniele Pantaleone
+     * @throws IOException If the RCON command fails in being executed
+     * @return A list of all the maps available on the server
+     **/
+    public List<String> getMapList() throws IOException;
+    
+    
+    /**
      * Return a boolean value which inform of match mode activated/deactivated.
      * 
-     * @return boolean
      * @author Daniele Pantaleone
-     * @throws IOException 
-     * @throws ParserException
+     * @throws IOException If the RCON command fails in being executed
+     * @throws ParserException If the conversion between String and Boolean fails
+     * @return TRUE if the match mode is activated, FALSE otherwise
      **/
     public boolean getMatchmode() throws IOException, ParserException;
     
@@ -274,9 +286,9 @@ public interface Console {
     /**
      * Return the next map name.
      * 
-     * @return String
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return The name of the nextmap set on the server
      **/
     public String getNextMap() throws IOException;
     
@@ -284,9 +296,9 @@ public interface Console {
     /**
      * Return an List containing the result of the "/rcon players" command.
      * 
-     * @return List<List<String>>
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return A list containing players informations
      **/
     public List<List<String>> getPlayers() throws IOException;
     
@@ -294,9 +306,9 @@ public interface Console {
     /**
      * Return an List containing the result of the "/rcon status" command.
      * 
-     * @return List<List<String>>
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return A list containing status informations
      **/
     public List<List<String>> getStatus() throws IOException;
     
@@ -305,9 +317,9 @@ public interface Console {
      * Return the timelimit value.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException
-     * @throws NumberFormatException
-     * @return int
+     * @throws IOException If the RCON command fails in being executed
+     * @throws NumberFormatException If the conversion between String and Integer fails
+     * @return The current timelimit value
      **/
     public int getTimelimit() throws IOException, NumberFormatException;
     
@@ -317,7 +329,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be kicked from the server
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kick(Client client) throws IOException;
     
@@ -327,7 +339,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be kicked from the server
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kick(int slot) throws IOException;
     
@@ -338,7 +350,7 @@ public interface Console {
      * @author Daniele Pantaleone
      * @param  client The client who is going to be kicked from the server
      * @param  reason The reason why the client is going to be kicked
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kick(Client client, String reason) throws IOException;
     
@@ -349,7 +361,7 @@ public interface Console {
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be kicked from the server
      * @param  reason The reason why the player with the specified slot is going to be kicked
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kick(int slot, String reason) throws IOException;
     
@@ -359,7 +371,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be killed
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kill(Client client) throws IOException;
     
@@ -369,7 +381,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be killed
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void kill(int slot) throws IOException;
     
@@ -379,7 +391,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  mapname The name of the map to load
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void map(String mapname) throws IOException;
     
@@ -389,7 +401,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone 
      * @param  client The client who is going to be muted
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void mute(Client client) throws IOException;
     
@@ -399,7 +411,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone 
      * @param  slot The slot of the player who is going to be muted
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void mute(int slot) throws IOException;
     
@@ -409,7 +421,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be nuked
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void nuke(Client client) throws IOException;
     
@@ -419,7 +431,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be nuked
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void nuke(int slot) throws IOException;
     
@@ -429,7 +441,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  message The message to print
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void say(String message) throws IOException;
     
@@ -440,7 +452,7 @@ public interface Console {
      * @author Daniele Pantaleone
      * @param  name The name of the cvar
      * @param  value The value to assign to the cvar
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void setCvar(String name, String value) throws IOException;
     
@@ -450,7 +462,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client who is going to be slapped
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void slap(Client client) throws IOException;
     
@@ -460,7 +472,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player who is going to be slapped
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void slap(int slot) throws IOException;
     
@@ -470,7 +482,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  client The client whose we want to record a demo
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void startserverdemo(Client client) throws IOException;
 
@@ -480,7 +492,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone
      * @param  slot The slot of the player whose we want to record a demo
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void startserverdemo(int slot) throws IOException;
     
@@ -489,7 +501,7 @@ public interface Console {
      * Start recording a server side demo of all the online players.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void startserverdemo() throws IOException;
     
@@ -499,7 +511,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone 
      * @param  client The client whose we want to stop a demo recording
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void stopserverdemo(Client client) throws IOException;
     
@@ -509,7 +521,7 @@ public interface Console {
      * 
      * @author Daniele Pantaleone 
      * @param  slot The slot of the player whose we want to stop a demo recording
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void stopserverdemo(int slot) throws IOException;
     
@@ -518,39 +530,63 @@ public interface Console {
      * Stop recording a server side demo of all the online players.
      * 
      * @author Daniele Pantaleone
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void stopserverdemo() throws IOException;
     
     
     /**
+     * Send a private message to a player.
+     * 
+     * @author Daniele Pantaleone
+     * @param  client The client you want to send the message
+     * @param  message The message to be sent
+     * @throws IOException If the RCON command fails in being executed
+     **/
+    public void tell(Client client, String message) throws IOException;
+    
+    
+    /**
+     * Send a private message to a player.
+     * 
+     * @author Daniele Pantaleone
+     * @param  slot The slot of the player you want to send the message
+     * @param  message The message to be sent
+     * @throws IOException If the RCON command fails in being executed
+     **/
+    public void tell(int slot, String message) throws IOException;
+    
+    
+    /**
      * Unban a player from the server.
+     * This doesn't apply for "/rcon auth-ban" command.
      * 
      * @author Daniele Pantaleone
      * @param  client The client we want to unban
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void unban(Client client) throws IOException;
     
 
     /**
      * Unban a player from the server.
+     * This doesn't apply for "/rcon auth-ban" command.
      * 
      * @author Daniele Pantaleone
      * @param  ip The IP address of the player we want to unban
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
      **/
     public void unban(String ip) throws IOException;
     
     
     /**
      * Write a message directly in the Urban Terror console.
-     * Try to avoid the use of this command. Instead use the other 
-     * prebuild and optimized methods available in this class.
+     * Try to avoid the use of this command. Use instead the other optimized methods available in this class.
      * 
      * @author Daniele Pantaleone
      * @param  command The command to execute
-     * @throws IOException 
+     * @throws IOException If the RCON command fails in being executed
+     * @return The server response to the RCON command
      **/
     public String write(String command) throws IOException;
     
