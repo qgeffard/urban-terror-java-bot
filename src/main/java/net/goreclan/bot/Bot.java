@@ -23,7 +23,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
-import net.goreclan.console.Console;
+import net.goreclan.console.UrTConsole;
 import net.goreclan.parser.Parser;
 import net.goreclan.plugin.Plugin;
 import net.goreclan.utility.DataSourceManager;
@@ -36,7 +36,7 @@ public class Bot {
 	
 	public static Log log;												// Main BOT logger utility.
 	public static HierarchicalINIConfiguration config;					// Main configuration .ini file.
-	public static Console console;										// Urban Terror 4.2 console utility.
+	public static UrTConsole console;										// Urban Terror 4.2 console utility.
 	public static Parser parser;										// Urban Terror 4.2 log parser.
 	
 	public static Map<String, String> game;								// Hold current game cvars settings.

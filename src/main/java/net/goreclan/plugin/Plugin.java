@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
-import net.goreclan.console.Console;
+import net.goreclan.console.UrTConsole;
 import net.goreclan.control.GroupC;
 import net.goreclan.domain.Client;
 import net.goreclan.domain.Group;
@@ -33,7 +33,7 @@ public abstract class Plugin {
 	private static final String DEFAULT_COMMAND_MAX_LEVEL = "superadmin";
 	
 	protected HierarchicalINIConfiguration config;
-	protected Console console;
+	protected UrTConsole console;
 	protected Log log;
 	
 	protected CommandList commands;
@@ -319,7 +319,7 @@ public abstract class Plugin {
 	 * @param  config The plugin configuration file name
 	 * @return Plugin
 	 **/
-	public static Plugin buildPlugin(Console console, Log log, String pluginName, String configPath) {
+	public static Plugin buildPlugin(UrTConsole console, Log log, String pluginName, String configPath) {
 		
 		try {
 			

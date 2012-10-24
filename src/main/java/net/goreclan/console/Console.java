@@ -18,7 +18,7 @@ import net.goreclan.exception.ParserException;
 import net.goreclan.iourt42.Gametype;
 import net.goreclan.iourt42.Team;
 
-public interface Console {
+public interface Console {s
 	
 	 /**
      * Ban a player from the server permanently.
